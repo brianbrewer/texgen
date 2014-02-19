@@ -1,8 +1,9 @@
 .snap-drawer {
-	background-color: orange;
+	background-color: #bbb;
 	width: 200px;
 }
 
 .snap-content {
-	background-color: white;
+	background-color: #eee;
+	box-shadow: 0 0 10px #555;
 }

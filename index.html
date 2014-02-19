@@ -31,21 +31,42 @@
             <![endif]-->
         <div class="snap-drawers">
             <div class="snap-drawer snap-drawer-left">
-                <div>
-                    <h4>Demos</h4>
-                    <ul>
-                        <li><a href="#">Example</a></li>
-                        <li><a href="#">Example</a></li>
-                        <li><a href="#">Example</a></li>
-                        <li><a href="#">Example</a></li>
-                        <li><a href="#">Example</a></li>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Tesselation</div>
+                    <ul class="list-group">
+                       <a class="list-group-item" href="#">Regular Quadrilateral</a>
+                       <a class="list-group-item" href="#">Rectangle</a>
+                       <a class="list-group-item" href="#">Regular Triangle</a>
+                       <a class="list-group-item" href="#">Regular Hexagon</a>
+                       <a class="list-group-item" href="#">Arbritrary Quadrilateral</a>
+                       <a class="list-group-item" href="#">Arbritrary Triangle</a>
+                    </ul>
+                    <div class="panel-heading">Functions</div>
+                    <ul class="list-group">
+                       <a class="list-group-item" href="#">Inverse</a>
+                       <a class="list-group-item" href="#">Dilate</a>
+                       <a class="list-group-item" href="#">Contract</a>
+                       <a class="list-group-item" href="#">Color Replace</a>
+                       <a class="list-group-item" href="#">Fill</a>
+                    </ul>
+                    <div class="panel-heading">Generate</div>
+                    <ul class="list-group">
+                       <a class="list-group-item" href="#">Perlin Noise</a>
+                       <a class="list-group-item" href="#">Simplex Noise</a>
+                       <a class="list-group-item" href="#">Fractional Brownian Noise</a>
+                    </ul>
+                    <div class="panel-heading">Tools</div>
+                    <ul class="list-group">
+                       <a class="list-group-item" href="#">Data Wire</a>
+                       <a class="list-group-item" href="#">Remove</a>
+                       <a class="list-group-item" href="#">Copy</a>
                     </ul>
                 </div>
             </div>
             <div class="snap-drawer snap-drawer-right"></div>
         </div>
 
-        <div id="content" class="snap-content">
+        <div id="content" class="snap-content" style="overflow: hidden">
             <div class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -65,7 +86,9 @@
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
+            <canvas id="app-canvas"></canvas>
         </div>
+
 
         <!-- /container -->
         <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>-->
