@@ -48,6 +48,10 @@
                        <a class="list-group-item" href="#">Contract</a>
                        <a class="list-group-item" href="#">Color Replace</a>
                        <a class="list-group-item" href="#">Fill</a>
+                       <a class="list-group-item" href="#">Output</a>
+                       <a class="list-group-item" href="#">Inspect</a>
+                       <a class="list-group-item" href="#">Input Texture</a>
+                       <a class="list-group-item" href="#">Checkerboard</a>
                     </ul>
                     <div class="panel-heading">Generate</div>
                     <ul class="list-group">
@@ -82,7 +86,7 @@
                         <li><a href="javascript:">Edit</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a id="open-right" href="javascript:" style="margin-right:16px"><i class="fa fa-bars fa-lg"></i></a></li>
+                        <li><a id="open-right" href="javascript:" style="margin-right:16px"><i class="fa fa-cog fa-lg"></i></a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
@@ -105,14 +109,6 @@
                 maxPosition: 200,
                 minPosition: -200
             });
-
-            var addEvent = function addEvent(element, eventName, func) {
-                if (element.addEventListener) {
-                     return element.addEventListener(eventName, func, false);
-                    } else if (element.attachEvent) {
-                        return element.attachEvent("on" + eventName, func);
-                    }
-                };
 
             addEvent(document.getElementById('open-left'), 'click', function(){
                 snapper.open('left');
