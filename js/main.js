@@ -16,6 +16,7 @@ function draw() {
 
 	context.strokeStyle = "#333";
 	context.fillStyle = "#777";
+	canvas.width = canvas.width;
 
 	// Example Node Drawing Code
 	for (nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
@@ -88,4 +89,42 @@ function openDialog() {
 		show: true,
 		keyboard: true
 	});
+}
+
+canvas.addEventListener("mousedown", canvasDown);
+canvas.addEventListener("mouseup", canvasUp);
+
+var canvasOffsetX,
+	canvasOffsetY,
+	canvasID;
+
+function canvasDown (e) {
+	canvasX = e.clientX + (snapper.state().state == "left" ? -200 : 0) + (snapper.state().state == "right" ? 200 : 0);
+	canvasY = e.clientY;
+
+	// Maybe search backwards to find newest first
+	for (i = 0; i < nodes.length; i++) {
+		if (canvasX > nodes[i].x && canvasX < nodes[i].x + 150 && canvasY > nodes[i].y && canvasY < nodes[i].y + 300) {
+			canvasOffsetX = canvasX - nodes[i].x;
+			canvasOffsetY = canvasY - nodes[i].y;
+			canvasID = i;
+			console.log("Found 'em!");
+			canvas.addEventListener("mousemove", canvasMove);
+			break;
+		}
+	}
+}
+
+function canvasMove (e) {
+	canvasX = e.clientX + (snapper.state().state == "left" ? -200 : 0) + (snapper.state().state == "right" ? 200 : 0);
+	canvasY = e.clientY;
+
+	nodes[canvasID].x = canvasX - canvasOffsetX;
+	nodes[canvasID].y = canvasY - canvasOffsetY;
+
+	draw();
+}
+
+function canvasUp (e) {
+	canvas.removeEventListener("mousemove", canvasMove);
 }
