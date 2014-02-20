@@ -7,22 +7,53 @@ canvas.width = $(".navbar-default").width();
 canvas.height = $(".snap-content").height();
 context = canvas.getContext("2d");
 
-function draw () {
-	var nodeIndex;
+function draw() {
+	var nodeIndex,
+		currentNode,
+		fontSize = 10,
+		padding = 5,
+		margin = 10;
 
 	context.strokeStyle = "#333";
+	context.fillStyle = "#777";
 
+	// Example Node Drawing Code
 	for (nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
-		context.rect(nodes[nodeIndex].x, nodes[nodeIndex].y, 200, 100);
+		currentNode = nodes[nodeIndex];
+
+		// Fill Node Box
+		context.fillStyle = "#bbb";
+		context.fillRect(currentNode.x, currentNode.y, 130 + margin * 2, 300);
+
+		// Draw Node Box
+		context.rect(currentNode.x, currentNode.y, 130 + margin * 2, 300);
+
+		// Draw Title Box
+		context.fillStyle = "#ccc";
+		context.fillRect(currentNode.x, currentNode.y, 130 + margin * 2, padding * 2 + fontSize);
+		context.rect(currentNode.x, currentNode.y, 130 + margin * 2, padding * 2 + fontSize);
+
+		// Draw Title of Node
+		context.textAlign = "left";
+		context.textBaseline = "middle";
+		context.fillStyle = "#000";
+		context.fillText(currentNode.name, currentNode.x + 10, currentNode.y + 10);
+
+		// Draw Inputs
+		for (i = 0; i < currentNode.inputs.length; i++) {
+			context.fillText(currentNode.inputs[i], currentNode.x + margin, currentNode.y + padding * 4 + fontSize * 1.5 + padding * (i * 2) + fontSize * i);
+		}
+
+		// Draw Preview Box
+		context.fillStyle = "#fff";
+		context.fillRect(currentNode.x + margin, currentNode.y + padding * 4 + fontSize * 1.5 + padding * (currentNode.inputs.length * 2) + fontSize * currentNode.inputs.length, 130, 130);
+		context.rect(currentNode.x + margin, currentNode.y + padding * 4 + fontSize * 1.5 + padding * (currentNode.inputs.length * 2) + fontSize * currentNode.inputs.length, 130, 130);
 	}
 	context.stroke();
 }
 
 $(".list-group-item").on("click", function () {
-	nodes.push({
-		x: Math.round(Math.random()*800),
-		y: Math.round(Math.random()*800)
-	});
+	nodes.push(newNode());
 	draw();
 });
 
@@ -51,3 +82,10 @@ $("#open-right").on("click", function () {
 		snapper.open("right");
 	}
 });
+
+function openDialog() {
+	$("#myModal").modal({
+		show: true,
+		keyboard: true
+	});
+}

@@ -10,4 +10,5 @@
 
 #app-canvas {
 	background-image: url('../img/back.png');
+	cursor: default;
 }

@@ -29,6 +29,27 @@
             <!--[if lt IE 7]>
                     <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
             <![endif]-->
+
+        <div class="modal fade" aria-hidden="true" id="myModal">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                      </div>
+                      <div class="modal-body">
+                        ...
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
         <div class="snap-drawers">
             <div class="snap-drawer snap-drawer-left">
                 <div class="panel panel-default">
@@ -83,7 +104,7 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li><a id="open-left" href="javascript:"><i class="fa fa-bars fa-lg"></i></a></li>
-                        <li><a href="javascript:">Edit</a></li>
+                        <li><a href="javascript:openDialog()">Edit</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a id="open-right" href="javascript:" style="margin-right:16px"><i class="fa fa-cog fa-lg"></i></a></li>
@@ -93,29 +114,12 @@
             <canvas id="app-canvas"></canvas>
         </div>
 
-
         <!-- /container -->
         <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>-->
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/thirdparty/snap.min.js"></script>
+        <script src="js/gnode.js"></script>
         <script src="js/main.js"></script>
-        <script type="text/javascript">
-            var snapper = new Snap({
-                element: document.getElementById('content'),
-                disable: 'none',
-                hyperextensible: false,
-                touchToDrag: false,
-                maxPosition: 200,
-                minPosition: -200
-            });
-
-            addEvent(document.getElementById('open-left'), 'click', function(){
-                snapper.open('left');
-            });
-            addEvent(document.getElementById('open-right'), 'click', function(){
-                snapper.open('right');
-            });
-        </script>
         </body>
 </html>
