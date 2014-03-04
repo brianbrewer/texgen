@@ -7,6 +7,7 @@ canvas.width = $(".navbar-default").width();
 canvas.height = $(".snap-content").height();
 context = canvas.getContext("2d");
 
+//@TODO: Add canvas |& context & nodes to param list to make function more modular
 function draw() {
     var nodeIndex,
         currentNode,
@@ -18,41 +19,8 @@ function draw() {
     context.fillStyle = "#777";
     canvas.width = canvas.width;
 
-    // // Example Node Drawing Code
-    // for (nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
-    //     currentNode = nodes[nodeIndex];
-
-    //     // Fill Node Box
-    //     context.fillStyle = "#bbb";
-    //     context.fillRect(currentNode.x, currentNode.y, 130 + margin * 2, 300);
-
-    //     // Draw Node Box
-    //     context.rect(currentNode.x, currentNode.y, 130 + margin * 2, 300);
-
-    //     // Draw Title Box
-    //     context.fillStyle = "#ccc";
-    //     context.fillRect(currentNode.x, currentNode.y, 130 + margin * 2, padding * 2 + fontSize);
-    //     context.rect(currentNode.x, currentNode.y, 130 + margin * 2, padding * 2 + fontSize);
-
-    //     // Draw Title of Node
-    //     context.textAlign = "left";
-    //     context.textBaseline = "middle";
-    //     context.fillStyle = "#000";
-    //     context.fillText(currentNode.name, currentNode.x + 10, currentNode.y + 10);
-
-    //     // Draw Inputs
-    //     for (i = 0; i < currentNode.inputs.length; i++) {
-    //         context.fillText(currentNode.inputs[i], currentNode.x + margin, currentNode.y + padding * 4 + fontSize * 1.5 + padding * (i * 2) + fontSize * i);
-    //     }
-
-    //     // Draw Preview Box
-    //     context.fillStyle = "#fff";
-    //     context.fillRect(currentNode.x + margin, currentNode.y + padding * 4 + fontSize * 1.5 + padding * (currentNode.inputs.length * 2) + fontSize * currentNode.inputs.length, 130, 130);
-    //     context.rect(currentNode.x + margin, currentNode.y + padding * 4 + fontSize * 1.5 + padding * (currentNode.inputs.length * 2) + fontSize * currentNode.inputs.length, 130, 130);
-    // }
-    // context.stroke();
-
     // New Drawing
+    //@TODO: Complete section and find a more cost effective drawing sequence, redraw sections of the screen
     for (nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
         currentNode = nodes[nodeIndex];
 
@@ -70,22 +38,35 @@ function draw() {
         context.fillStyle = NodeStyle.FontColor;
         context.fillText(currentNode.Title, currentNode.Position.X + NodeStyle.NodeMargin, currentNode.Position.Y + currentNode.Dimension.TitleHeight / 2);
 
-        // Write Input / Output
+        // Write Input
+        context.textAlign = "left";
+        context.textBaseline = "middle";
         currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
-
         for (nodeInput in currentNode.Input) {
             currentHeight += NodeStyle.NodePadding;
             context.fillText(currentNode.Input[nodeInput].Type, currentNode.Position.X + NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
             currentHeight += NodeStyle.FontSize;
         }
-
-        currentInput = 0;
+        
+        // Write Output
+        context.textAlign = "right";
+        context.textBaseline = "middle";
+        currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
         for (nodeOutput in currentNode.Outputs) {
+            currentHeight += NodeStyle.NodePadding;
+            context.fillText(currentNode.Output[nodeOutput].Type, currentNode.Position.X + NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
+            currentHeight += NodeStyle.FontSize;
         }
-        //@TODO: Finish this
-
-        // Draw Input / Output Points
-        // Draw Circle!
+        
+        // Draw Input Points
+        //@TODO: Set fill color to GNode.js -> NodeStyle.InputColor[currentNode.Input[nodeInput].State == Required | Optional | Filled | Error
+        var cRadius, cStartAngle, cEndAngle, cCounterClockwise;
+        currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
+        for (nodeInout in currentNode.Input) {
+            currentHeight += NodeStyle.NodePadding;
+            context.arc(currentNode.Position.X, currentNode.Position.Y + currentHeight, cRadius, cStartAngle, cEndAngle, cCounterClockwise);
+        }
+        context.fill();
     }
 }
 
