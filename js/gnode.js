@@ -15,18 +15,21 @@ var Class = Class || chic.Class;
 // Object for holding all the style information
 var NodeStyle = {
     FontSize: 12,
-    FontColor: "#FFFFFF",
+    FontColor: "#fff",
     FontFamily: "Arial",
     LineWidth: 1,
     LineColor: "",
     FillColor: 0,
     NodePadding: 5,
     NodeMargin: 10,
-    BackgroundColor: "#555555",
-    TitleBackgroundColor: "#333333",
-    InputColorRequired: "#FF0000",
-    InputColorOptional: "#0000FF",
-    InputColorFilled: "#00FF00"
+    BackgroundColor: "#555",
+    TitleBackgroundColor: "#333",
+    InputColor: {
+        Required: "#00f",
+        Optional: "#999",
+        Complete: "#0f0",
+        Problem: "#f00"
+    }
 };
 
 // Top Level Graphical Node Class
@@ -40,6 +43,7 @@ var GNode = Class.extend({
         };
         this.Title = title;
         this.Dimension = {};
+        this.Predecessor = [];
     },
     Rename: function (newName) {
         this.Title = newName;
@@ -78,10 +82,10 @@ var ShapeNode = GNode.extend({
         this.sup(x, y, "Shape Node");
 
         // Outputs
-        this.Input.Point1 = new PointData(0, 0);
-        this.Input.Point2 = new PointData(0, 0);
-        this.Input.Point3 = new PointData(0, 0);
-        this.Input.Point4 = new PointData(0, 0);
+        this.Input.Point1 = new PointData(false, 0, 0);
+        this.Input.Point2 = new PointData(false, 0, 0);
+        this.Input.Point3 = new PointData(false, 0, 0);
+        this.Input.Point4 = new PointData(false, 0, 0);
 
         // Values
         this.PointCount = 3;
@@ -117,13 +121,15 @@ var NumberNode = GNode.extend({
 
 // Top Level Data Class for Input / Outputs
 var GData = Class.extend({
-    init: function () {
+    init: function (required) {
+        this.Type = required ? "Required" : "Optional";
     }
 });
 
 // Data for points (2D Vector)
 var PointData = GData.extend({
-    init: function (x, y) {
+    init: function (required, x, y) {
+        this.sup(required);
         this.X = x;
         this.Y = y;
         this.Type = "Point";
