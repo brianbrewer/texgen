@@ -358,11 +358,6 @@
 }
 /* line 23, ../sass/vex-theme-os.sass */
 .vex.vex-theme-os .vex-content {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
   -webkit-box-shadow: inset 0 1px #a6a6a6, 0 0 0 1px rgba(0, 0, 0, 0.08);
   -moz-box-shadow: inset 0 1px #a6a6a6, 0 0 0 1px rgba(0, 0, 0, 0.08);
   box-shadow: inset 0 1px #a6a6a6, 0 0 0 1px rgba(0, 0, 0, 0.08);
@@ -384,11 +379,6 @@
 }
 /* line 41, ../sass/vex-theme-os.sass */
 .vex.vex-theme-os .vex-close {
-  -webkit-border-radius: 0 5px 0 0;
-  -moz-border-radius: 0 5px 0 0;
-  -ms-border-radius: 0 5px 0 0;
-  -o-border-radius: 0 5px 0 0;
-  border-radius: 0 5px 0 0;
   position: absolute;
   top: 0;
   right: 0;
@@ -396,11 +386,6 @@
 }
 /* line 48, ../sass/vex-theme-os.sass */
 .vex.vex-theme-os .vex-close:before {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
   position: absolute;
   content: "\00D7";
   font-size: 26px;
@@ -429,11 +414,6 @@
 }
 /* line 75, ../sass/vex-theme-os.sass */
 .vex.vex-theme-os .vex-dialog-form .vex-dialog-input textarea, .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="date"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="datetime"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="datetime-local"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="email"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="month"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="number"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="password"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="search"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="tel"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="text"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="time"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="url"], .vex.vex-theme-os .vex-dialog-form .vex-dialog-input input[type="week"] {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
   background: white;
   width: 100%;
   padding: 0.25em 0.67em;
@@ -463,11 +443,6 @@
 }
 /* line 94, ../sass/vex-theme-os.sass */
 .vex.vex-theme-os .vex-dialog-button {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
   border: 0;
   float: right;
   margin: 0 0 0 0.5em;

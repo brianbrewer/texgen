@@ -1,109 +1,87 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
         <head>
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
             <title>Texgen</title>
             <meta name="description" content="">
             <meta name="viewport" content="width=device-width">
-
-            <link rel="stylesheet" href="css/bootstrap.min.css">
-            <style>
-                body {
-                    padding-top: 50px;
-                    padding-bottom: 20px;
-                }
-            </style>
-            <!--<link rel="stylesheet" href="css/bootstrap-theme.min.css">-->
-            <link rel="stylesheet" href="http://bootswatch.com/yeti/bootstrap.min.css">
             <link rel="stylesheet" href="css/main.css">
             <link rel="stylesheet" href="css/snap.css">
             <link rel="stylesheet" href="css/vex.css">
             <link rel="stylesheet" href="css/vex-theme-os.css">
             <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
-
-            <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+            <script src="js/vendor/jquery-1.10.1.min.js"></script>
         </head>
         <body>
-            <!--[if lt IE 7]>
-                    <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-            <![endif]-->
-        <div class="snap-drawers">
-            <div class="snap-drawer snap-drawer-left">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Basic</div>
-                    <ul class="list-group">
-                       <a class="list-group-item" href="#">Shape</a>
-                    </ul>
-                    <div class="panel-heading">Tesselation</div>
-                    <ul class="list-group">
-                       <a class="list-group-item" href="#">Regular Quadrilateral</a>
-                       <a class="list-group-item" href="#">Rectangle</a>
-                       <a class="list-group-item" href="#">Regular Triangle</a>
-                       <a class="list-group-item" href="#">Regular Hexagon</a>
-                       <a class="list-group-item" href="#">Arbritrary Quadrilateral</a>
-                       <a class="list-group-item" href="#">Arbritrary Triangle</a>
-                    </ul>
-                    <div class="panel-heading">Functions</div>
-                    <ul class="list-group">
-                       <a class="list-group-item" href="#">Inverse</a>
-                       <a class="list-group-item" href="#">Dilate</a>
-                       <a class="list-group-item" href="#">Contract</a>
-                       <a class="list-group-item" href="#">Color Replace</a>
-                       <a class="list-group-item" href="#">Fill</a>
-                       <a class="list-group-item" href="#">Output</a>
-                       <a class="list-group-item" href="#">Input Texture</a>
-                       <a class="list-group-item" href="#">Checkerboard</a>
-                    </ul>
-                    <div class="panel-heading">Generate</div>
-                    <ul class="list-group">
-                       <a class="list-group-item" href="#">Perlin Noise</a>
-                       <a class="list-group-item" href="#">Simplex Noise</a>
-                       <a class="list-group-item" href="#">Fractional Brownian Noise</a>
+            <div class="snap-drawers">
+                <div class="snap-drawer snap-drawer-left">
+                    <ul class="toolbox">
+                        <li class="heading">Basic</li>
+                        <ul id="group-basic">
+                            <li class="tool">Triangle</li>
+                            <li class="tool">Quadrilateral</li>
+                            <li class="tool">Point (Vector)</li>
+                            <li class="tool">Matrix</li>
+                            <li class="tool">Integer</li>
+                        </ul>
+                        <li class="heading">Tesselate</li>
+                        <ul id="group-tesselate">
+                            <li class="tool">Square</li>
+                            <li class="tool">Rectangle</li>
+                            <li class="tool">Regular Triangle</li>
+                            <li class="tool">Regular Hexagon</li>
+                            <li class="tool">Arbritrary Triangle</li>
+                            <li class="tool">Arbritrary Quadrilateral</li>
+                        </ul>
+                        <li class="heading">Generate</li>
+                        <ul id="group-generate">
+                            <li class="tool">Perlin Noise</li>
+                            <li class="tool">Simplex Noise</li>
+                            <li class="tool">Fractional Brownian Noise</li>
+                        </ul>
+                        <li class="heading">Function</li>
+                        <ul id="group-function">
+                            <li class="tool">Inverse</li>
+                            <li class="tool">Fill</li>
+                            <li class="tool">Dilate</li>
+                            <li class="tool">Contract</li>
+                            <li class="tool">Import Image</li>
+                            <li class="tool">Color Replace</li>
+                            <li class="tool">Checkerboard</li>
+                            <li class="tool">Mask</li>
+                        </ul>
+                        <li class="heading">Converter</li>
+                        <ul id="group-converter">
+                            <li class="tool">Point</li>
+                            <li class="tool">Shape</li>
+                            <li class="tool">Integer</li>
+                        </ul>
                     </ul>
                 </div>
+                <div class="snap-drawer snap-drawer-right"></div>
             </div>
-            <div class="snap-drawer snap-drawer-right"></div>
-        </div>
 
-        <div id="content" class="snap-content" style="overflow: hidden">
-            <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
+            <div id="content" class="snap-content">
+                <div class="navbar">
+                    <ul class="nav-left">
                         <li><a id="open-left" href="javascript:"><i class="fa fa-bars fa-lg"></i></a></li>
-                        <li><a href="javascript:"><i class="fa fa-link fa-lg"></i></a></li>
                         <li><a href="javascript:"><i class="fa fa-arrows fa-lg"></i></a></li>
-                        <li><a href="javascript:"><i class="fa fa-times fa-lg"></i></a></li>
+                        <li><a href="javascript:"><i class="fa fa-link fa-lg"></i></a></li>
                         <li><a href="javascript:openDialog()"><i class="fa fa-pencil fa-lg"></i></a></li>
+                        <li><a href="javascript:"><i class="fa fa-times fa-lg"></i></a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a id="open-right" href="javascript:" style="margin-right:16px"><i class="fa fa-ellipsis-h fa-lg"></i></a></li>
+                    <ul class="nav-right">
+                        <li><a id="open-right" href="javascript:"><i class="fa fa-cog fa-lg"></i></a></li>
                     </ul>
-                </div><!--/.nav-collapse -->
+                </div>
+                <canvas id="app-canvas"></canvas>
             </div>
-            <canvas id="app-canvas"></canvas>
-        </div>
 
-        <!-- /container -->
-        <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>-->
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
-        <script src="js/vendor/bootstrap.min.js"></script>
-        <script src="js/thirdparty/vex.combined.min.js"></script>
-        <script>vex.defaultOptions.className = 'vex-theme-os';</script>
-        <script src="js/thirdparty/snap.min.js"></script>
-        <script src="js/thirdparty/chic.js"></script>
-        <script src="js/gnode.js"></script>
-        <script src="js/main.js"></script>
+            <script src="js/thirdparty/vex.combined.min.js"></script>
+            <script>vex.defaultOptions.className = 'vex-theme-os';</script>
+            <script src="js/thirdparty/snap.min.js"></script>
+            <script src="js/thirdparty/chic.js"></script>
+            <script src="js/gnode.js"></script>
+            <script src="js/main.js"></script>
         </body>
 </html>

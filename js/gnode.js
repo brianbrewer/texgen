@@ -16,16 +16,16 @@ var Class = Class || chic.Class;
 
 // Object for holding all the style information
 var NodeStyle = {
-    FontSize: 12,
-    FontColor: "#fff",
-    FontFamily: "Arial",
+    FontSize: 10,
+    FontColor: "#333",
+    FontFamily: "Sans-Serif",
     LineWidth: 1,
     LineColor: "",
     FillColor: 0,
     NodePadding: 5,
     NodeMargin: 10,
-    BackgroundColor: "#555",
-    TitleBackgroundColor: "#333",
+    BackgroundColor: "#f0f0f0",
+    TitleBackgroundColor: "#bbb",
     InputColor: {
         Required: "#bbe",
         Optional: "#bbb",

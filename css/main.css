@@ -2,6 +2,11 @@ body {
 	background-color: #333;
 }
 
+* {
+	margin: 0;
+	padding: 0;
+}
+
 .snap-drawer {
 	background-color: #eee;
 	width: 200px;
@@ -10,9 +15,95 @@ body {
 .snap-content {
 	background-color: #eee;
 	box-shadow: 0 0 10px #555;
+	overflow: hidden;
 }
 
 #app-canvas {
 	background-image: url('../img/back.png');
 	cursor: default;
+}
+
+#content {
+	overflow: hidden;
+}
+
+.navbar {
+	height: 45px;
+	color: #fff;
+	background-color: #333;
+	border-bottom: #222 1px solid;
+}
+
+.navbar li > a:hover {
+	background-color: #222;
+}
+
+.nav-left {
+	list-style-type: none;
+	margin: auto;
+	width: 100%;
+}
+
+.nav-left > li {
+	float: left;
+}
+
+.nav-left > li > a {
+	padding: 16px;
+	color: #fff;
+	font-weight: 300;
+	line-height: 45px;
+}
+
+.nav-right {
+	list-style-type: none;
+	margin: auto;
+	width: 100%;
+}
+
+.nav-right > li {
+	float: right;
+}
+
+.nav-right > li > a {
+	padding: 16px;
+	color: #fff;
+	font-weight: 300;
+	line-height: 45px;
+}
+
+.toolbox {
+	list-style: none;
+	width: 100%;
+}
+
+.toolbox .heading {
+	background-color: #444;
+	color: #fff;
+	height: 32px;
+	width: 100%;
+	text-align: center;
+	display: block;
+	border-bottom: #222 1px solid;
+	line-height: 32px;
+	cursor: pointer;
+}
+
+.toolbox .tool {
+	background-color: #eee;
+	color: #222;
+	height: 32px;
+	width: 100%;
+	text-align: center;
+	display: block;
+	line-height: 32px;
+	border-bottom: #ccc 1px solid;
+}
+
+.toolbox > ul {
+	overflow: hidden;
+}
+
+.collapse {
+	height: 0px;
 }

@@ -4,12 +4,11 @@ var canvas,
     toolState = "Move"; // "Move" || "Edit" || "Link" || Remove
 
 canvas = document.getElementById("app-canvas");
-canvas.width = $(".navbar-default").width();
-canvas.height = $(".snap-content").height();
+canvas.width = $("#content").width();
+canvas.height = $("#content").height();
 context = canvas.getContext("2d");
 
 //@TODO: Add canvas |& context & nodes to param list to make function more modular
-//@TODO: Remove Bootstrap from entire project, use normal css Font-Awesome, Vex and Snap
 function draw () {
     var nodeIndex,
         currentNode,
@@ -17,9 +16,8 @@ function draw () {
         padding = 5,
         margin = 10;
 
-    context.strokeStyle = "#333";
-    context.fillStyle = "#777";
     canvas.width = canvas.width;
+    context.font = NodeStyle.FontSize + "px " + NodeStyle.FontFamily;
 
     // New Drawing
     //@TODO: Complete section and find a more cost effective drawing sequence, redraw sections of the screen
@@ -92,7 +90,7 @@ function draw () {
 }
 
 // Test adding new Node
-$(".list-group-item").on("click", function () {
+$(".tool").on("click", function () {
     nodes.push(new ShapeNode(100, 100));
     draw();
 });
@@ -123,10 +121,19 @@ $("#open-right").on("click", function () {
     }
 });
 
+$(".toolbox .heading").on("click", function (e) {
+    var target, nameTarget;
+
+    target = e.target;
+    nameTarget = target.innerHTML.toLowerCase();
+    nameTarget = "#group-" + nameTarget.replace(/\s/g, "-");
+
+    $(nameTarget).slideToggle();
+});
+
 function openDialog() {
     vex.dialog.open({
-        message: "Example Text",
-        showCloseButton: true
+        message: "Edit Dialog"
     });
 }
 
@@ -141,7 +148,7 @@ function canvasDown (e) {
     canvasX = e.clientX + (snapper.state().state == "left" ? -200 : 0) + (snapper.state().state == "right" ? 200 : 0);
     canvasY = e.clientY;
 
-    // Maybe search backwards to find newest first
+    //@FUTURE Maybe search backwards to find newest first
     for (i = 0; i < nodes.length; i++) {
         if (canvasX > nodes[i].Position.X && canvasX < nodes[i].Position.X + nodes[i].Dimension.NodeWidth && canvasY > nodes[i].Position.Y && canvasY < nodes[i].Position.Y + nodes[i].Dimension.NodeHeight) {
             canvasOffsetX = canvasX - nodes[i].Position.X;
