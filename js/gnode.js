@@ -11,6 +11,8 @@ var newNode = function () {
 };
 
 var Class = Class || chic.Class;
+//@TODO: Differenciate between input and output in regards to using Data, for example nodes only have outputs defined, and inputs have states of their own
+//@TODO: Maybe split up into input, output and data objects for simpler use and state use
 
 // Object for holding all the style information
 var NodeStyle = {
@@ -25,10 +27,14 @@ var NodeStyle = {
     BackgroundColor: "#555",
     TitleBackgroundColor: "#333",
     InputColor: {
-        Required: "#00f",
-        Optional: "#999",
-        Complete: "#0f0",
+        Required: "#bbe",
+        Optional: "#bbb",
+        Connected: "#0f0",
         Problem: "#f00"
+    },
+    OutputColor: {
+        Disconnected: "#bbb",
+        Connected: "#0f0"
     }
 };
 
@@ -55,7 +61,9 @@ var GNode = Class.extend({
             input;
 
         // Static Values
-        this.Dimension.NodeWidth = 128;
+        this.Dimension.NodeWidth = 150;
+        this.Dimension.PreviewWidth = 100;
+        this.Dimension.PreviewHeight = 100;
 
         // Calculate Private Values
         inputHeight += NodeStyle.NodePadding;
@@ -72,7 +80,9 @@ var GNode = Class.extend({
         this.Dimension.InputHeight = inputHeight;
         this.Dimension.OutputHeight = outputHeight;
         this.Dimension.InputOutputHeight = inputHeight > outputHeight ? inputHeight : outputHeight;
-        this.Dimension.NodeHeight = this.Dimension.TitleHeight + this.Dimension.InputOutputHeight;
+        this.Dimension.NodeHeight = this.Dimension.TitleHeight + this.Dimension.InputOutputHeight + this.Dimension.PreviewHeight + NodeStyle.NodePadding * 2;
+        this.Dimension.PreviewX = (this.Dimension.NodeWidth - this.Dimension.PreviewWidth) / 2;
+        this.Dimension.PreviewY = this.Dimension.TitleHeight + this.Dimension.InputOutputHeight
     }
 });
 
@@ -82,10 +92,10 @@ var ShapeNode = GNode.extend({
         this.sup(x, y, "Shape Node");
 
         // Outputs
-        this.Input.Point1 = new PointData(false, 0, 0);
-        this.Input.Point2 = new PointData(false, 0, 0);
-        this.Input.Point3 = new PointData(false, 0, 0);
-        this.Input.Point4 = new PointData(false, 0, 0);
+        this.Output.Point1 = new Output("Point");
+        this.Output.Point2 = new Output("Point");
+        this.Output.Point3 = new Output("Point");
+        this.Output.Point4 = new Output("Point");
 
         // Values
         this.PointCount = 3;
@@ -101,16 +111,16 @@ var ShapeTesselateNode = GNode.extend({
         this.sup(x, y, "Shape Tesselation");
 
         // Inputs
-        this.Input.Point1 = null;
-        this.Input.Point2 = null;
-        this.Input.Point3 = null;
-        this.Input.Point4 = null;
-
-        // Outputs
-        this.Output.ColorData = new ColorDataData();
+        this.Input.Point1 = new Input("Point", true);
+        this.Input.Point2 = new Input("Point", true);
+        this.Input.Point3 = new Input("Point", true);
+        this.Input.Point4 = new Input("Point", false);
 
         // Values
         this.PointCount = 3;
+
+        // Final
+        this.CalculateSize();
     }
 });
 
@@ -122,7 +132,7 @@ var NumberNode = GNode.extend({
 // Top Level Data Class for Input / Outputs
 var GData = Class.extend({
     init: function (required) {
-        this.Type = required ? "Required" : "Optional";
+        this.State = required ? "Required" : "Optional";
     }
 });
 
@@ -138,8 +148,28 @@ var PointData = GData.extend({
 
 // Data for Integer
 var NumberData = GData.extend({
+    init: function (required, i) {
+        this.sup(required);
+        this.I = i;
+    }
 });
 
 // Stores RGB as a Nested Array
 var ColorDataData = GData.extend({
+});
+
+var Input = Class.extend({
+    init: function (type, required) {
+        this.Data = null;
+        this.Type = type;
+        this.State = required ? "Required" : "Optional";
+    }
+});
+
+var Output = Class.extend({
+    init: function (type) {
+        this.Data = null;
+        this.Type = type;
+        this.State = "Disconnected";
+    }
 });

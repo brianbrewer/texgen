@@ -1,5 +1,9 @@
+body {
+	background-color: #333;
+}
+
 .snap-drawer {
-	background-color: #bbb;
+	background-color: #eee;
 	width: 200px;
 }
 

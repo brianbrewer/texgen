@@ -1,6 +1,7 @@
 var canvas,
     context,
-    nodes = [];
+    nodes = [],
+    toolState = "Move"; // "Move" || "Edit" || "Link" || Remove
 
 canvas = document.getElementById("app-canvas");
 canvas.width = $(".navbar-default").width();
@@ -8,7 +9,8 @@ canvas.height = $(".snap-content").height();
 context = canvas.getContext("2d");
 
 //@TODO: Add canvas |& context & nodes to param list to make function more modular
-function draw() {
+//@TODO: Remove Bootstrap from entire project, use normal css Font-Awesome, Vex and Snap
+function draw () {
     var nodeIndex,
         currentNode,
         fontSize = 10,
@@ -39,34 +41,53 @@ function draw() {
         context.fillText(currentNode.Title, currentNode.Position.X + NodeStyle.NodeMargin, currentNode.Position.Y + currentNode.Dimension.TitleHeight / 2);
 
         // Write Input
+		context.beginPath();
         context.textAlign = "left";
         context.textBaseline = "middle";
         currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
         for (nodeInput in currentNode.Input) {
             currentHeight += NodeStyle.NodePadding;
-            context.fillText(currentNode.Input[nodeInput].Type, currentNode.Position.X + NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
+            context.fillText(nodeInput + " (" + currentNode.Input[nodeInput].Type + ")", currentNode.Position.X + NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
             currentHeight += NodeStyle.FontSize;
         }
-        
-        // Write Output
+		
+		// Write Output
+		context.beginPath();
         context.textAlign = "right";
         context.textBaseline = "middle";
         currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
-        for (nodeOutput in currentNode.Outputs) {
+        for (nodeOutput in currentNode.Output) {
             currentHeight += NodeStyle.NodePadding;
-            context.fillText(currentNode.Output[nodeOutput].Type, currentNode.Position.X + NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
+            context.fillText(nodeOutput + " (" + currentNode.Output[nodeOutput].Type + ")", currentNode.Position.X + currentNode.Dimension.NodeWidth - NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
             currentHeight += NodeStyle.FontSize;
-        }
-        
+		}
+
         // Draw Input Points
-        //@TODO: Set fill color to GNode.js -> NodeStyle.InputColor[currentNode.Input[nodeInput].State == Required | Optional | Filled | Error
-        var cRadius, cStartAngle, cEndAngle, cCounterClockwise;
         currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
-        for (nodeInout in currentNode.Input) {
+        for (nodeInput in currentNode.Input) {
+			context.beginPath();
+			context.fillStyle = NodeStyle.InputColor[currentNode.Input[nodeInput].State];
             currentHeight += NodeStyle.NodePadding;
-            context.arc(currentNode.Position.X, currentNode.Position.Y + currentHeight, cRadius, cStartAngle, cEndAngle, cCounterClockwise);
+            context.arc(currentNode.Position.X, currentNode.Position.Y + currentHeight, 5, 0, Math.PI * 2, false);
+			currentHeight += NodeStyle.FontSize;
+			context.fill();
         }
-        context.fill();
+
+		// Draw Output Points
+		currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
+		for (nodeOutput in currentNode.Output) {
+			context.beginPath();
+			context.fillStyle = NodeStyle.OutputColor[currentNode.Output[nodeOutput].State];
+			currentHeight += NodeStyle.NodePadding;
+			context.arc(currentNode.Position.X + currentNode.Dimension.NodeWidth, currentNode.Position.Y + currentHeight, 5, 0 ,Math.PI * 2, false);
+			currentHeight += NodeStyle.FontSize;
+			context.fill();
+		}
+
+        // Draw Preview Window
+        context.beginPath();
+        context.fillStyle = "#fff"; //@TODO: Substitute for actual image
+        context.fillRect(currentNode.Position.X + currentNode.Dimension.PreviewX, currentNode.Position.Y + currentNode.Dimension.PreviewY, 100, 100);
     }
 }
 
@@ -103,9 +124,9 @@ $("#open-right").on("click", function () {
 });
 
 function openDialog() {
-    $("#myModal").modal({
-        show: true,
-        keyboard: true
+    vex.dialog.open({
+        message: "Example Text",
+        showCloseButton: true
     });
 }
 
