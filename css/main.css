@@ -38,6 +38,11 @@ body {
 	background-color: #222;
 }
 
+.navbar .selected {
+	color: #ff8c00;
+	background-color: #282828;
+}
+
 .nav-left {
 	list-style-type: none;
 	margin: auto;
@@ -90,7 +95,7 @@ body {
 }
 
 .toolbox .tool {
-	background-color: #eee;
+	background-color: #fff;
 	color: #222;
 	height: 32px;
 	width: 100%;
@@ -98,6 +103,19 @@ body {
 	display: block;
 	line-height: 32px;
 	border-bottom: #ccc 1px solid;
+	cursor: default;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.toolbox .tool:hover {
+	background-color: #ff8c00;
+	color: #fff;
 }
 
 .toolbox > ul {
@@ -105,5 +123,4 @@ body {
 }
 
 .collapse {
-	height: 0px;
 }

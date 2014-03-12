@@ -1,7 +1,10 @@
+/*jslint browser: true, devel: true */
+/*global $ */
 var canvas,
     context,
     nodes = [],
-    toolState = "Move"; // "Move" || "Edit" || "Link" || Remove
+    connections = [],
+    toolState = "Move"; // "Move" || "Edit" || "Link" || "Remove"
 
 canvas = document.getElementById("app-canvas");
 canvas.width = $("#content").width();
@@ -19,8 +22,8 @@ function draw () {
     canvas.width = canvas.width;
     context.font = NodeStyle.FontSize + "px " + NodeStyle.FontFamily;
 
-    // New Drawing
     //@TODO: Complete section and find a more cost effective drawing sequence, redraw sections of the screen
+    // Draw All Nodes
     for (nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
         currentNode = nodes[nodeIndex];
 
@@ -48,7 +51,7 @@ function draw () {
             context.fillText(nodeInput + " (" + currentNode.Input[nodeInput].Type + ")", currentNode.Position.X + NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
             currentHeight += NodeStyle.FontSize;
         }
-		
+
 		// Write Output
 		context.beginPath();
         context.textAlign = "right";
@@ -56,7 +59,7 @@ function draw () {
         currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
         for (nodeOutput in currentNode.Output) {
             currentHeight += NodeStyle.NodePadding;
-            context.fillText(nodeOutput + " (" + currentNode.Output[nodeOutput].Type + ")", currentNode.Position.X + currentNode.Dimension.NodeWidth - NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
+            context.fillText(nodeOutput + " (" + currentNode.Output[nodeOutput].Data.Type + ")", currentNode.Position.X + currentNode.Dimension.NodeWidth - NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
             currentHeight += NodeStyle.FontSize;
 		}
 
@@ -71,21 +74,25 @@ function draw () {
 			context.fill();
         }
 
-		// Draw Output Points
-		currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
-		for (nodeOutput in currentNode.Output) {
-			context.beginPath();
-			context.fillStyle = NodeStyle.OutputColor[currentNode.Output[nodeOutput].State];
-			currentHeight += NodeStyle.NodePadding;
-			context.arc(currentNode.Position.X + currentNode.Dimension.NodeWidth, currentNode.Position.Y + currentHeight, 5, 0 ,Math.PI * 2, false);
-			currentHeight += NodeStyle.FontSize;
-			context.fill();
+        // Draw Output Points
+        currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
+        for (nodeOutput in currentNode.Output) {
+            context.beginPath();
+            context.fillStyle = NodeStyle.OutputColor[currentNode.Output[nodeOutput].State];
+            currentHeight += NodeStyle.NodePadding;
+            context.arc(currentNode.Position.X + currentNode.Dimension.NodeWidth, currentNode.Position.Y + currentHeight, 5, 0 ,Math.PI * 2, false);
+            currentHeight += NodeStyle.FontSize;
+            context.fill();
 		}
 
         // Draw Preview Window
         context.beginPath();
         context.fillStyle = "#fff"; //@TODO: Substitute for actual image
         context.fillRect(currentNode.Position.X + currentNode.Dimension.PreviewX, currentNode.Position.Y + currentNode.Dimension.PreviewY, 100, 100);
+    }
+
+    // Draw All Connections
+    for (var i = 0; i < connections.length; i++) {
     }
 }
 
@@ -105,7 +112,7 @@ var snapper = new Snap({
     minPosition: -200
 });
 
-$("#open-left").on("click", function () {
+$(".open-left").on("click", function () {
     if (snapper.state().state == "left") {
         snapper.close();
     } else {
@@ -113,7 +120,7 @@ $("#open-left").on("click", function () {
     }
 });
 
-$("#open-right").on("click", function () {
+$(".open-right").on("click", function () {
     if (snapper.state().state == "right") {
         snapper.close();
     } else {
@@ -121,20 +128,68 @@ $("#open-right").on("click", function () {
     }
 });
 
+// Toolbox Collapsing
 $(".toolbox .heading").on("click", function (e) {
-    var target, nameTarget;
+    var target,
+        caret;
 
-    target = e.target;
-    nameTarget = target.innerHTML.toLowerCase();
-    nameTarget = "#group-" + nameTarget.replace(/\s/g, "-");
+    if (e.target.nodeName === "I") {
+        target = e.target.parentNode;
+    } else {
+        target = e.target;
+    }
+    caret = target.children[0];
 
-    $(nameTarget).slideToggle();
+    if ($(caret).hasClass("fa-rotate-270")) {
+        $(caret).removeClass("fa-rotate-270");
+    } else {
+        $(caret).addClass("fa-rotate-270");
+    }
+
+    $("#group-" + $(target).data("heading")).slideToggle();
+});
+
+// Tool / Mode Switching
+$(".nav-left a[data-mode]").on("click", function (e) {
+    var tElement;
+
+    if (e.target.nodeName === "I") {
+        tElement = e.target.parentNode;
+    } else {
+        tElement = e.target;
+    }
+
+    $(".nav-left a").each(function () {
+        $(this).removeClass("selected");
+    });
+    $(tElement).addClass("selected");
+
+    toolState = $(tElement).data("mode");
 });
 
 function openDialog() {
     vex.dialog.open({
         message: "Edit Dialog"
     });
+}
+
+function connectInputOutput (InputNode, InputName, OutputNode, OutputName) {
+    // Check Input -> Output Type
+    if (InputNode.Input[InputName].Type === OutputNode.Output[OutputName].Data.Type) {
+        InputNode.Input[InputName].Data = OutputNode.Output[OutputName].Data;
+        InputNode.Input[InputName].State = "Connected";
+        OutputNode.Output[OutputName].State = "Connected";
+    } else {
+        InputNode.Input[InputName].State = "Problem";
+        OutputNode.Output[OutputName].State = "Connected";
+    }
+}
+
+function disconnectInputOutput (InputNode, InputName, OutputNode, OutputName) {
+    // Remove Regardless
+    InputNode.Input[InputName].Data = null;
+    InputNode.Input[InputName].State = "Optional";
+    OutputNode.Output[OutputName].State = "Disconnected";
 }
 
 canvas.addEventListener("mousedown", canvasDown);
@@ -145,32 +200,52 @@ var canvasOffsetX,
     canvasID;
 
 function canvasDown (e) {
-    canvasX = e.clientX + (snapper.state().state == "left" ? -200 : 0) + (snapper.state().state == "right" ? 200 : 0);
-    canvasY = e.clientY;
+    // Moving Nodes
+    if (toolState === "Move") {
+        canvasX = e.clientX + (snapper.state().state == "left" ? -200 : 0) + (snapper.state().state == "right" ? 200 : 0);
+        canvasY = e.clientY;
 
-    //@FUTURE Maybe search backwards to find newest first
-    for (i = 0; i < nodes.length; i++) {
-        if (canvasX > nodes[i].Position.X && canvasX < nodes[i].Position.X + nodes[i].Dimension.NodeWidth && canvasY > nodes[i].Position.Y && canvasY < nodes[i].Position.Y + nodes[i].Dimension.NodeHeight) {
-            canvasOffsetX = canvasX - nodes[i].Position.X;
-            canvasOffsetY = canvasY - nodes[i].Position.Y;
-            canvasID = i;
-            console.log("Found 'em!");
-            canvas.addEventListener("mousemove", canvasMove);
-            break;
+        //@FUTURE Maybe search backwards to find newest first
+        for (i = nodes.length - 1; i >= 0; i--) {
+            if (canvasX > nodes[i].Position.X && canvasX < nodes[i].Position.X + nodes[i].Dimension.NodeWidth && canvasY > nodes[i].Position.Y && canvasY < nodes[i].Position.Y + nodes[i].Dimension.NodeHeight) {
+                canvasOffsetX = canvasX - nodes[i].Position.X;
+                canvasOffsetY = canvasY - nodes[i].Position.Y;
+                canvasID = i;
+                canvas.addEventListener("mousemove", canvasMove);
+                break;
+            }
         }
+    }
+
+    // Link Nodes Input / Output
+    if (toolState === "Link") {
+    }
+
+    // Edit
+    if (toolState === "Link") {
+    }
+
+    // Remove
+    if (toolState === "Remove") {
     }
 }
 
 function canvasMove (e) {
-    canvasX = e.clientX + (snapper.state().state == "left" ? -200 : 0) + (snapper.state().state == "right" ? 200 : 0);
-    canvasY = e.clientY;
+    // Moving Nodes
+    if (toolState === "Move") {
+        canvasX = e.clientX + (snapper.state().state == "left" ? -200 : 0) + (snapper.state().state == "right" ? 200 : 0);
+        canvasY = e.clientY;
 
-    nodes[canvasID].Position.X = canvasX - canvasOffsetX;
-    nodes[canvasID].Position.Y = canvasY - canvasOffsetY;
+        nodes[canvasID].Position.X = canvasX - canvasOffsetX;
+        nodes[canvasID].Position.Y = canvasY - canvasOffsetY;
 
-    draw();
+        draw();
+    }
 }
 
 function canvasUp (e) {
-    canvas.removeEventListener("mousemove", canvasMove);
+    // Moving Nodes
+    if (toolState === "Move") {
+        canvas.removeEventListener("mousemove", canvasMove);
+    }
 }

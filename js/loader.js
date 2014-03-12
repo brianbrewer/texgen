@@ -1,21 +1,81 @@
-/* Graphic Node Design */
-var newNode = function () {
-    "use strict";
-    return {
-        inputs: ["Input 1", "Input 2", "Input 3", "Input 4", "Input 5", "Input 6"],
-        outputs: ["Output 1", "Output 2"],
-        name: "Node Name",
-        x: 100.5,
-        y: 100.5
-    };
-};
-
+/*jslint browser: true, devel: true */
+/*global brianbrewer, chic, toast */
+var brianbrewer = brianbrewer || {};
 var Class = Class || chic.Class;
-//@TODO: Differenciate between input and output in regards to using Data, for example nodes only have outputs defined, and inputs have states of their own
-//@TODO: Maybe split up into input, output and data objects for simpler use and state use
 
+/*
+ * Sets up the Nodes and Data Objects as well as the
+ */
+(function () {
+    "use strict";
+
+    // NameSpaces
+    brianbrewer.Nodes = {};
+    brianbrewer.Data = {};
+    brianbrewer.Loader = {};
+
+    // NodeStyle
+    brianbrewer.NodeStyle = {
+        FontSize: 10,
+        FontColor: "#333",
+        FontFamily: "Sans-Serif",
+        LineWidth: 1,
+        LineColor: "",
+        FillColor: 0,
+        NodePadding: 5,
+        NodeMargin: 10,
+        BackgroundColor: "#f0f0f0",
+        TitleBackgroundColor: "#bbb",
+        InputColor: {
+            Required: "#ff0",
+            Optional: "#fff",
+            Connected: "#0f0",
+            Problem: "#f00"
+        },
+        OutputColor: {
+            Disconnected: "#bbb",
+            Connected: "#0f0"
+        }
+    };
+
+    brianbrewer.Input = Class.extend({
+        init: function (type, required) {
+            this.Data = null;
+            this.Type = type;
+            this.Required = required;
+            this.State = "Disconnected";
+        }
+    });
+
+    brianbrewer.Output = Class.extend({
+        init: function (data) {
+            this.Data = data;
+            this.State = "Disconnected";
+        }
+    });
+
+    // Load /data and /nodes
+    brianbrewer.Loader.Load = function () {
+        // Load Data
+        toast(
+            ['js/data/gdata.js', function () { return brianbrewer.Data.GData; }],
+            ['js/data/point.js', function () { return brianbrewer.Data.Point; }],
+            function () { console.log("Data Loaded!"); }
+        );
+
+        // Load Nodes
+        toast(
+            ['js/nodes/gnode.js', function () { return brianbrewer.Nodes.GNode; }],
+            ['js/nodes/triangle.js', function () { return brianbrewer.Nodes.Triangle; }],
+            ['js/nodes/tesselatetriangle.js', function () { return brianbrewer.Nodes.TesselateTriangle; }],
+            function () { console.log("Nodes Loaded!"); }
+        );
+    };
+}());
+
+/*
 // Object for holding all the style information
-var NodeStyle = {
+brianbrewer.NodeStyle = {
     FontSize: 10,
     FontColor: "#333",
     FontFamily: "Sans-Serif",
@@ -27,8 +87,8 @@ var NodeStyle = {
     BackgroundColor: "#f0f0f0",
     TitleBackgroundColor: "#bbb",
     InputColor: {
-        Required: "#bbe",
-        Optional: "#bbb",
+        Required: "#ff0",
+        Optional: "#fff",
         Connected: "#0f0",
         Problem: "#f00"
     },
@@ -92,10 +152,10 @@ var ShapeNode = GNode.extend({
         this.sup(x, y, "Shape Node");
 
         // Outputs
-        this.Output.Point1 = new Output("Point");
-        this.Output.Point2 = new Output("Point");
-        this.Output.Point3 = new Output("Point");
-        this.Output.Point4 = new Output("Point");
+        this.Output.Point1 = new Output(new PointData(0, 0));
+        this.Output.Point2 = new Output(new PointData(0, 0));
+        this.Output.Point3 = new Output(new PointData(0, 0));
+        this.Output.Point4 = new Output(new PointData(0, 0));
 
         // Values
         this.PointCount = 3;
@@ -131,15 +191,13 @@ var NumberNode = GNode.extend({
 
 // Top Level Data Class for Input / Outputs
 var GData = Class.extend({
-    init: function (required) {
-        this.State = required ? "Required" : "Optional";
+    init: function () {
     }
 });
 
 // Data for points (2D Vector)
 var PointData = GData.extend({
-    init: function (required, x, y) {
-        this.sup(required);
+    init: function (x, y) {
         this.X = x;
         this.Y = y;
         this.Type = "Point";
@@ -148,9 +206,7 @@ var PointData = GData.extend({
 
 // Data for Integer
 var NumberData = GData.extend({
-    init: function (required, i) {
-        this.sup(required);
-        this.I = i;
+    init: function (i) {
     }
 });
 
@@ -162,14 +218,15 @@ var Input = Class.extend({
     init: function (type, required) {
         this.Data = null;
         this.Type = type;
-        this.State = required ? "Required" : "Optional";
+        this.Required = required;
+        this.State = "Disconnected";
     }
 });
 
 var Output = Class.extend({
-    init: function (type) {
-        this.Data = null;
-        this.Type = type;
+    init: function (data) {
+        this.Data = data;
         this.State = "Disconnected";
     }
 });
+*/

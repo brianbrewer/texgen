@@ -1,22 +1,20 @@
 <!DOCTYPE html>
         <head>
             <meta charset="utf-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
             <title>Texgen</title>
             <meta name="description" content="">
             <meta name="viewport" content="width=device-width">
+            <link rel="stylesheet" href="css/thirdparty/snap.css">
+            <link rel="stylesheet" href="css/thirdparty/vex.css">
+            <link rel="stylesheet" href="css/thirdparty/vex-theme-os.css">
+            <link rel="stylesheet" href="css/thirdparty/font-awesome/css/font-awesome.min.css">
             <link rel="stylesheet" href="css/main.css">
-            <link rel="stylesheet" href="css/snap.css">
-            <link rel="stylesheet" href="css/vex.css">
-            <link rel="stylesheet" href="css/vex-theme-os.css">
-            <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
-            <script src="js/vendor/jquery-1.10.1.min.js"></script>
         </head>
         <body>
             <div class="snap-drawers">
                 <div class="snap-drawer snap-drawer-left">
                     <ul class="toolbox">
-                        <li class="heading">Basic</li>
+                        <li class="heading" data-heading="basic"><i class="fa fa-caret-down"></i> Basic</li>
                         <ul id="group-basic">
                             <li class="tool">Triangle</li>
                             <li class="tool">Quadrilateral</li>
@@ -24,7 +22,7 @@
                             <li class="tool">Matrix</li>
                             <li class="tool">Integer</li>
                         </ul>
-                        <li class="heading">Tesselate</li>
+                        <li class="heading" data-heading="tesselate"><i class="fa fa-caret-down"></i> Tesselate</li>
                         <ul id="group-tesselate">
                             <li class="tool">Square</li>
                             <li class="tool">Rectangle</li>
@@ -33,13 +31,13 @@
                             <li class="tool">Arbritrary Triangle</li>
                             <li class="tool">Arbritrary Quadrilateral</li>
                         </ul>
-                        <li class="heading">Generate</li>
+                        <li class="heading" data-heading="generate"><i class="fa fa-caret-down"></i> Generate</li>
                         <ul id="group-generate">
                             <li class="tool">Perlin Noise</li>
                             <li class="tool">Simplex Noise</li>
                             <li class="tool">Fractional Brownian Noise</li>
                         </ul>
-                        <li class="heading">Function</li>
+                        <li class="heading" data-heading="function"><i class="fa fa-caret-down"></i> Function</li>
                         <ul id="group-function">
                             <li class="tool">Inverse</li>
                             <li class="tool">Fill</li>
@@ -50,7 +48,7 @@
                             <li class="tool">Checkerboard</li>
                             <li class="tool">Mask</li>
                         </ul>
-                        <li class="heading">Converter</li>
+                        <li class="heading" data-heading="converter"><i class="fa fa-caret-down"></i> Converter</li>
                         <ul id="group-converter">
                             <li class="tool">Point</li>
                             <li class="tool">Shape</li>
@@ -64,24 +62,27 @@
             <div id="content" class="snap-content">
                 <div class="navbar">
                     <ul class="nav-left">
-                        <li><a id="open-left" href="javascript:"><i class="fa fa-bars fa-lg"></i></a></li>
-                        <li><a href="javascript:"><i class="fa fa-arrows fa-lg"></i></a></li>
-                        <li><a href="javascript:"><i class="fa fa-link fa-lg"></i></a></li>
-                        <li><a href="javascript:openDialog()"><i class="fa fa-pencil fa-lg"></i></a></li>
-                        <li><a href="javascript:"><i class="fa fa-times fa-lg"></i></a></li>
+                        <li><a href="javascript:" class="open-left"><i class="fa fa-bars fa-lg"></i></a></li>
+                        <li><a href="javascript:" class="selected" data-mode="Move"><i class="fa fa-arrows fa-lg"></i></a></li>
+                        <li><a href="javascript:" data-mode="Link"><i class="fa fa-link fa-lg"></i></a></li>
+                        <li><a href="javascript: openDialog()" data-mode="Edit"><i class="fa fa-pencil fa-lg"></i></a></li>
+                        <li><a href="javascript:" data-mode="Remove"><i class="fa fa-times fa-lg"></i></a></li>
                     </ul>
                     <ul class="nav-right">
-                        <li><a id="open-right" href="javascript:"><i class="fa fa-cog fa-lg"></i></a></li>
+                        <li><a href="javascript:" class="open-right"><i class="fa fa-cog fa-lg"></i></a></li>
                     </ul>
                 </div>
                 <canvas id="app-canvas"></canvas>
             </div>
 
+            <script src="js/vendor/jquery-1.10.1.min.js"></script>
+            <script src="js/thirdparty/toast.js"></script>
             <script src="js/thirdparty/vex.combined.min.js"></script>
             <script>vex.defaultOptions.className = 'vex-theme-os';</script>
             <script src="js/thirdparty/snap.min.js"></script>
             <script src="js/thirdparty/chic.js"></script>
-            <script src="js/gnode.js"></script>
+            <script src="js/thirdparty/alertify.min.js"></script>
             <script src="js/main.js"></script>
+            <script src="js/loader.js"></script>
         </body>
 </html>
