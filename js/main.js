@@ -20,68 +20,69 @@ function draw () {
         margin = 10;
 
     canvas.width = canvas.width;
-    context.font = NodeStyle.FontSize + "px " + NodeStyle.FontFamily;
+    context.font = brianbrewer.NodeStyle.FontSize + "px " + brianbrewer.NodeStyle.FontFamily;
 
     //@TODO: Complete section and find a more cost effective drawing sequence, redraw sections of the screen
+    //@TODO: Update the NodeStyle use with inputs, required and state
     // Draw All Nodes
     for (nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
         currentNode = nodes[nodeIndex];
 
         // Fill Node
-        context.fillStyle = NodeStyle.BackgroundColor;
+        context.fillStyle = brianbrewer.NodeStyle.BackgroundColor;
         context.fillRect(currentNode.Position.X, currentNode.Position.Y, currentNode.Dimension.NodeWidth, currentNode.Dimension.NodeHeight);
 
         // Fill Title
-        context.fillStyle = NodeStyle.TitleBackgroundColor;
+        context.fillStyle = brianbrewer.NodeStyle.TitleBackgroundColor;
         context.fillRect(currentNode.Position.X, currentNode.Position.Y, currentNode.Dimension.NodeWidth, currentNode.Dimension.TitleHeight);
 
         // Write Title
         context.textAlign = "left";
         context.textBaseline = "middle";
-        context.fillStyle = NodeStyle.FontColor;
-        context.fillText(currentNode.Title, currentNode.Position.X + NodeStyle.NodeMargin, currentNode.Position.Y + currentNode.Dimension.TitleHeight / 2);
+        context.fillStyle = brianbrewer.NodeStyle.FontColor;
+        context.fillText(currentNode.Title, currentNode.Position.X + brianbrewer.NodeStyle.NodeMargin, currentNode.Position.Y + currentNode.Dimension.TitleHeight / 2);
 
         // Write Input
 		context.beginPath();
         context.textAlign = "left";
         context.textBaseline = "middle";
-        currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
+        currentHeight = currentNode.Dimension.TitleHeight + brianbrewer.NodeStyle.NodePadding;
         for (nodeInput in currentNode.Input) {
-            currentHeight += NodeStyle.NodePadding;
-            context.fillText(nodeInput + " (" + currentNode.Input[nodeInput].Type + ")", currentNode.Position.X + NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
-            currentHeight += NodeStyle.FontSize;
+            currentHeight += brianbrewer.NodeStyle.NodePadding;
+            context.fillText(nodeInput + " (" + currentNode.Input[nodeInput].Type + ")", currentNode.Position.X + brianbrewer.NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
+            currentHeight += brianbrewer.NodeStyle.FontSize;
         }
 
 		// Write Output
 		context.beginPath();
         context.textAlign = "right";
         context.textBaseline = "middle";
-        currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
+        currentHeight = currentNode.Dimension.TitleHeight + brianbrewer.NodeStyle.NodePadding;
         for (nodeOutput in currentNode.Output) {
-            currentHeight += NodeStyle.NodePadding;
-            context.fillText(nodeOutput + " (" + currentNode.Output[nodeOutput].Data.Type + ")", currentNode.Position.X + currentNode.Dimension.NodeWidth - NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
-            currentHeight += NodeStyle.FontSize;
+            currentHeight += brianbrewer.NodeStyle.NodePadding;
+            context.fillText(nodeOutput + " (" + currentNode.Output[nodeOutput].Data.Type + ")", currentNode.Position.X + currentNode.Dimension.NodeWidth - brianbrewer.NodeStyle.NodeMargin, currentNode.Position.Y + currentHeight);
+            currentHeight += brianbrewer.NodeStyle.FontSize;
 		}
 
         // Draw Input Points
-        currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
+        currentHeight = currentNode.Dimension.TitleHeight + brianbrewer.NodeStyle.NodePadding;
         for (nodeInput in currentNode.Input) {
 			context.beginPath();
-			context.fillStyle = NodeStyle.InputColor[currentNode.Input[nodeInput].State];
-            currentHeight += NodeStyle.NodePadding;
+			context.fillStyle = brianbrewer.NodeStyle.InputColor[currentNode.Input[nodeInput].State];
+            currentHeight += brianbrewer.NodeStyle.NodePadding;
             context.arc(currentNode.Position.X, currentNode.Position.Y + currentHeight, 5, 0, Math.PI * 2, false);
-			currentHeight += NodeStyle.FontSize;
+			currentHeight += brianbrewer.NodeStyle.FontSize;
 			context.fill();
         }
 
         // Draw Output Points
-        currentHeight = currentNode.Dimension.TitleHeight + NodeStyle.NodePadding;
+        currentHeight = currentNode.Dimension.TitleHeight + brianbrewer.NodeStyle.NodePadding;
         for (nodeOutput in currentNode.Output) {
             context.beginPath();
-            context.fillStyle = NodeStyle.OutputColor[currentNode.Output[nodeOutput].State];
-            currentHeight += NodeStyle.NodePadding;
+            context.fillStyle = brianbrewer.NodeStyle.OutputColor[currentNode.Output[nodeOutput].State];
+            currentHeight += brianbrewer.NodeStyle.NodePadding;
             context.arc(currentNode.Position.X + currentNode.Dimension.NodeWidth, currentNode.Position.Y + currentHeight, 5, 0 ,Math.PI * 2, false);
-            currentHeight += NodeStyle.FontSize;
+            currentHeight += brianbrewer.NodeStyle.FontSize;
             context.fill();
 		}
 
@@ -98,7 +99,7 @@ function draw () {
 
 // Test adding new Node
 $(".tool").on("click", function () {
-    nodes.push(new ShapeNode(100, 100));
+    nodes.push(new brianbrewer.Nodes.Triangle(100, 100));
     draw();
 });
 

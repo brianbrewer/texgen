@@ -1,3 +1,4 @@
+/* Modified to take in an array and a function */
 /*
     toast, a simple CSS and JS resource loader
 
@@ -7,20 +8,20 @@
     License     : MIT
 */
 
-(function(def){
-    if(typeof define=='function'){
-		define(def);
-	}
-    else if(typeof module!='undefined'){
-        module.exports=def;
+(function(context, definition){
+    if (typeof module != 'undefined' && module.exports) {
+        module.exports = definition();
     }
-    else{
-        this.toast=def;
+    else if ( typeof define == 'function' && define.amd ) {
+        define(definition);
     }
-}(function(){
+    else {
+        context.toast = definition();
+    }
+}(this, function(){
 
     var handled_resources={};
-    
+
     return function(){
         var doc=document,
             head=doc.getElementsByTagName('head')[0],
@@ -124,7 +125,7 @@
                 }
             };
         // Load resources
-        loadResources(arguments);
+        loadResources(arguments[0].concat(arguments[1]));
     };
-    
-}()));
+
+}));

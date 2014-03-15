@@ -12,6 +12,7 @@
             this.Input.Point3 = new brianbrewer.Input("Point", true);
 
             this.CalculateSize();
-        }
+        },
+        Compute: function () {}
     });
 }());

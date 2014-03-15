@@ -1,9 +1,5 @@
 /*global brianbrewer, Class */
 
-
-//@TODO: Differenciate between input and output in regards to using Data, for example nodes only have outputs defined, and inputs have states of their own
-//@TODO: Maybe split up into input, output and data objects for simpler use and state use
-
 (function () {
     "use strict";
 
@@ -19,9 +15,17 @@
             this.Title = title;
             this.Dimension = {};
             this.Predecessor = []; //@TODO: Test using this functionality / check the default value
+            this.ImageData = null;
+            this.Category = "Unsorted";
         },
         Rename: function (newName) {
             this.Title = newName;
+        },
+        setPredecessor: function (node, outputname) {
+            //@TODO: Finish this
+            if (node.Output[outputname]) {
+                console.log("Well, it's there!");
+            }
         },
         CalculateSize: function () {
             var inputHeight = 0,
@@ -59,6 +63,7 @@
         },
         Compute: function () {
             //@TODO: Use this for the main computation of the image
+            throw "Override Me";
         }
     });
 }());

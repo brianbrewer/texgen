@@ -8,13 +8,22 @@ var Class = Class || chic.Class;
  */
 (function () {
     "use strict";
+    var testfunction;
 
     // NameSpaces
     brianbrewer.Nodes = {};
     brianbrewer.Data = {};
     brianbrewer.Loader = {};
 
+    //@TODO: Move options to new file (options.js) or main.js
+    // Options
+    brianbrewer.Options = {
+        renderWidth: 500,
+        renderHeight: 500
+    };
+
     // NodeStyle
+    //@TODO: Update to work with new input design
     brianbrewer.NodeStyle = {
         FontSize: 10,
         FontColor: "#333",
@@ -54,179 +63,40 @@ var Class = Class || chic.Class;
         }
     });
 
-    // Load /data and /nodes
-    brianbrewer.Loader.Load = function () {
-        // Load Data
-        toast(
-            ['js/data/gdata.js', function () { return brianbrewer.Data.GData; }],
-            ['js/data/point.js', function () { return brianbrewer.Data.Point; }],
-            function () { console.log("Data Loaded!"); }
-        );
+    brianbrewer.Loader.LoadList = [
+        "Data|GData",
+        "Data|Point",
+        "Nodes|GNode",
+        "Nodes|Triangle",
+        "Nodes|TesselateTriangle"
+    ];
 
-        // Load Nodes
-        toast(
-            ['js/nodes/gnode.js', function () { return brianbrewer.Nodes.GNode; }],
-            ['js/nodes/triangle.js', function () { return brianbrewer.Nodes.Triangle; }],
-            ['js/nodes/tesselatetriangle.js', function () { return brianbrewer.Nodes.TesselateTriangle; }],
-            function () { console.log("Nodes Loaded!"); }
-        );
-    };
-}());
-
-/*
-// Object for holding all the style information
-brianbrewer.NodeStyle = {
-    FontSize: 10,
-    FontColor: "#333",
-    FontFamily: "Sans-Serif",
-    LineWidth: 1,
-    LineColor: "",
-    FillColor: 0,
-    NodePadding: 5,
-    NodeMargin: 10,
-    BackgroundColor: "#f0f0f0",
-    TitleBackgroundColor: "#bbb",
-    InputColor: {
-        Required: "#ff0",
-        Optional: "#fff",
-        Connected: "#0f0",
-        Problem: "#f00"
-    },
-    OutputColor: {
-        Disconnected: "#bbb",
-        Connected: "#0f0"
-    }
-};
-
-// Top Level Graphical Node Class
-var GNode = Class.extend({
-    init: function (x, y, title) {
-        this.Input = {};
-        this.Output = {};
-        this.Position = {
-            X: x,
-            Y: y
+    testfunction = function (type, name) {
+        return function () {
+            return brianbrewer[type][name];
         };
-        this.Title = title;
-        this.Dimension = {};
-        this.Predecessor = [];
-    },
-    Rename: function (newName) {
-        this.Title = newName;
-    },
-    CalculateSize: function () {
-        var inputHeight = 0,
-            outputHeight = 0,
-            output,
-            input;
+    };
 
-        // Static Values
-        this.Dimension.NodeWidth = 150;
-        this.Dimension.PreviewWidth = 100;
-        this.Dimension.PreviewHeight = 100;
+    // Load /data and /nodes
+    //@TODO: Clean this up << Success
+    brianbrewer.Loader.Load = function () {
+        var type,
+            name,
+            split,
+            uri,
+            i,
+            toload = [];
 
-        // Calculate Private Values
-        inputHeight += NodeStyle.NodePadding;
-        outputHeight += NodeStyle.NodePadding;
-        for (input in this.Input) {
-            inputHeight += NodeStyle.NodePadding + NodeStyle.FontSize;
-        }
-        for (output in this.Output) {
-            outputHeight += NodeStyle.NodePadding + NodeStyle.FontSize;
+        for (i = 0; i < brianbrewer.Loader.LoadList.length; i += 1) {
+            split = brianbrewer.Loader.LoadList[i].split('|');
+            type = split[0];
+            name = split[1];
+
+            toload.push(["js/" + type.toLowerCase() + "/" + name.toLowerCase() + ".js", testfunction(type, name)]);
         }
 
-        // Dynamic Values
-        this.Dimension.TitleHeight = NodeStyle.FontSize + NodeStyle.NodePadding * 2;
-        this.Dimension.InputHeight = inputHeight;
-        this.Dimension.OutputHeight = outputHeight;
-        this.Dimension.InputOutputHeight = inputHeight > outputHeight ? inputHeight : outputHeight;
-        this.Dimension.NodeHeight = this.Dimension.TitleHeight + this.Dimension.InputOutputHeight + this.Dimension.PreviewHeight + NodeStyle.NodePadding * 2;
-        this.Dimension.PreviewX = (this.Dimension.NodeWidth - this.Dimension.PreviewWidth) / 2;
-        this.Dimension.PreviewY = this.Dimension.TitleHeight + this.Dimension.InputOutputHeight
-    }
-});
+        toast(toload, function () { console.log("Everything Loaded!"); });
+    };
 
-// Node for editing and drawing Single Shapes (3 -> 4 Sides)
-var ShapeNode = GNode.extend({
-    init: function (x, y) {
-        this.sup(x, y, "Shape Node");
-
-        // Outputs
-        this.Output.Point1 = new Output(new PointData(0, 0));
-        this.Output.Point2 = new Output(new PointData(0, 0));
-        this.Output.Point3 = new Output(new PointData(0, 0));
-        this.Output.Point4 = new Output(new PointData(0, 0));
-
-        // Values
-        this.PointCount = 3;
-
-        // Final
-        this.CalculateSize();
-    }
-});
-
-// Node for tesselating shapes
-var ShapeTesselateNode = GNode.extend({
-    init: function (x, y) {
-        this.sup(x, y, "Shape Tesselation");
-
-        // Inputs
-        this.Input.Point1 = new Input("Point", true);
-        this.Input.Point2 = new Input("Point", true);
-        this.Input.Point3 = new Input("Point", true);
-        this.Input.Point4 = new Input("Point", false);
-
-        // Values
-        this.PointCount = 3;
-
-        // Final
-        this.CalculateSize();
-    }
-});
-
-// Node for single integer
-var NumberNode = GNode.extend({
-    init: function () {}
-});
-
-// Top Level Data Class for Input / Outputs
-var GData = Class.extend({
-    init: function () {
-    }
-});
-
-// Data for points (2D Vector)
-var PointData = GData.extend({
-    init: function (x, y) {
-        this.X = x;
-        this.Y = y;
-        this.Type = "Point";
-    }
-});
-
-// Data for Integer
-var NumberData = GData.extend({
-    init: function (i) {
-    }
-});
-
-// Stores RGB as a Nested Array
-var ColorDataData = GData.extend({
-});
-
-var Input = Class.extend({
-    init: function (type, required) {
-        this.Data = null;
-        this.Type = type;
-        this.Required = required;
-        this.State = "Disconnected";
-    }
-});
-
-var Output = Class.extend({
-    init: function (data) {
-        this.Data = data;
-        this.State = "Disconnected";
-    }
-});
-*/
+    brianbrewer.Loader.List = function () { console.log(null); };
+}());
