@@ -14,46 +14,6 @@
             <div class="snap-drawers">
                 <div class="snap-drawer snap-drawer-left">
                     <ul class="toolbox">
-                        <li class="heading" data-heading="basic"><i class="fa fa-caret-down"></i> Basic</li>
-                        <ul id="group-basic">
-                            <li class="tool">Triangle</li>
-                            <li class="tool">Quadrilateral</li>
-                            <li class="tool">Point (Vector)</li>
-                            <li class="tool">Matrix</li>
-                            <li class="tool">Integer</li>
-                        </ul>
-                        <li class="heading" data-heading="tesselate"><i class="fa fa-caret-down"></i> Tesselate</li>
-                        <ul id="group-tesselate">
-                            <li class="tool">Square</li>
-                            <li class="tool">Rectangle</li>
-                            <li class="tool">Regular Triangle</li>
-                            <li class="tool">Regular Hexagon</li>
-                            <li class="tool">Arbritrary Triangle</li>
-                            <li class="tool">Arbritrary Quadrilateral</li>
-                        </ul>
-                        <li class="heading" data-heading="generate"><i class="fa fa-caret-down"></i> Generate</li>
-                        <ul id="group-generate">
-                            <li class="tool">Perlin Noise</li>
-                            <li class="tool">Simplex Noise</li>
-                            <li class="tool">Fractional Brownian Noise</li>
-                        </ul>
-                        <li class="heading" data-heading="function"><i class="fa fa-caret-down"></i> Function</li>
-                        <ul id="group-function">
-                            <li class="tool">Inverse</li>
-                            <li class="tool">Fill</li>
-                            <li class="tool">Dilate</li>
-                            <li class="tool">Contract</li>
-                            <li class="tool">Import Image</li>
-                            <li class="tool">Color Replace</li>
-                            <li class="tool">Checkerboard</li>
-                            <li class="tool">Mask</li>
-                        </ul>
-                        <li class="heading" data-heading="converter"><i class="fa fa-caret-down"></i> Converter</li>
-                        <ul id="group-converter">
-                            <li class="tool">Point</li>
-                            <li class="tool">Shape</li>
-                            <li class="tool">Integer</li>
-                        </ul>
                     </ul>
                 </div>
                 <div class="snap-drawer snap-drawer-right"></div>
@@ -63,9 +23,10 @@
                 <div class="navbar">
                     <ul class="nav-left">
                         <li><a href="javascript:" class="open-left"><i class="fa fa-bars fa-lg"></i></a></li>
-                        <li><a href="javascript:" class="selected" data-mode="Move"><i class="fa fa-arrows fa-lg"></i></a></li>
+                        <li><a href="javascript:" class="selected" data-mode="Pan"><i class="fa fa-arrows fa-lg"></i></a></li>
+                        <li><a href="javascript:" data-mode="Move"><i class="fa fa-location-arrow fa-lg"></i></a></li>
                         <li><a href="javascript:" data-mode="Link"><i class="fa fa-link fa-lg"></i></a></li>
-                        <li><a href="javascript: openDialog()" data-mode="Edit"><i class="fa fa-pencil fa-lg"></i></a></li>
+                        <li><a href="javascript: brianbrewer.Interface.drawNodes();" data-mode="Edit"><i class="fa fa-pencil fa-lg"></i></a></li>
                         <li><a href="javascript:" data-mode="Remove"><i class="fa fa-times fa-lg"></i></a></li>
                     </ul>
                     <ul class="nav-right">
@@ -82,7 +43,7 @@
             <script src="js/thirdparty/snap.min.js"></script>
             <script src="js/thirdparty/chic.js"></script>
             <script src="js/thirdparty/alertify.min.js"></script>
-            <script src="js/main.js"></script>
             <script src="js/loader.js"></script>
+            <script src="js/nmain.js"></script>
         </body>
 </html>

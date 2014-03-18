@@ -66,9 +66,11 @@ var Class = Class || chic.Class;
     brianbrewer.Loader.LoadList = [
         "Data|GData",
         "Data|Point",
+        "Data|Integer",
         "Nodes|GNode",
         "Nodes|Triangle",
-        "Nodes|TesselateTriangle"
+        "Nodes|TesselateTriangle",
+        "Nodes|Integer"
     ];
 
     testfunction = function (type, name) {
@@ -79,7 +81,7 @@ var Class = Class || chic.Class;
 
     // Load /data and /nodes
     //@TODO: Clean this up << Success
-    brianbrewer.Loader.Load = function () {
+    brianbrewer.Loader.Load = function (callback) {
         var type,
             name,
             split,
@@ -95,7 +97,7 @@ var Class = Class || chic.Class;
             toload.push(["js/" + type.toLowerCase() + "/" + name.toLowerCase() + ".js", testfunction(type, name)]);
         }
 
-        toast(toload, function () { console.log("Everything Loaded!"); });
+        toast(toload, callback);
     };
 
     brianbrewer.Loader.List = function () { console.log(null); };

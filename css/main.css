@@ -92,6 +92,14 @@ body {
 	border-bottom: #222 1px solid;
 	line-height: 32px;
 	cursor: pointer;
+    font-size: 14px;
+
+    -webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .toolbox .tool {
@@ -104,6 +112,7 @@ body {
 	line-height: 32px;
 	border-bottom: #ccc 1px solid;
 	cursor: default;
+    font-size: 12px;
 
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -116,10 +125,6 @@ body {
 .toolbox .tool:hover {
 	background-color: #ff8c00;
 	color: #fff;
-}
-
-.toolbox > ul {
-	overflow: hidden;
 }
 
 .collapse {

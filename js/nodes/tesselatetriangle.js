@@ -11,6 +11,8 @@
             this.Input.Point2 = new brianbrewer.Input("Point", true);
             this.Input.Point3 = new brianbrewer.Input("Point", true);
 
+            this.Category = "Tesselate";
+
             this.CalculateSize();
         },
         Compute: function () {}

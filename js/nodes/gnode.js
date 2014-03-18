@@ -1,3 +1,4 @@
+/*jslint browser: true, devel: true */
 /*global brianbrewer, Class */
 
 (function () {
@@ -31,7 +32,9 @@
             var inputHeight = 0,
                 outputHeight = 0,
                 output,
-                input;
+                input,
+                shortTitle,
+                isShortened = false;
 
             // Static Values
             this.Dimension.NodeWidth = 150;
@@ -52,7 +55,15 @@
                 }
             }
 
+            // If title is too long, just put some ... in there
+            shortTitle = this.Title;
+            while (brianbrewer.NodeStyle.NodeMargin * 2 + brianbrewer.Interface.Context.App.measureText(shortTitle + "...").width > this.Dimension.NodeWidth) {
+                shortTitle = shortTitle.substr(0, shortTitle.length - 2);
+                isShortened = true;
+            }
+
             // Dynamic Values
+            this.ShortTitle = isShortened ? shortTitle + "..." : this.Title;
             this.Dimension.TitleHeight = brianbrewer.NodeStyle.FontSize + brianbrewer.NodeStyle.NodePadding * 2;
             this.Dimension.InputHeight = inputHeight;
             this.Dimension.OutputHeight = outputHeight;
@@ -62,8 +73,13 @@
             this.Dimension.PreviewY = this.Dimension.TitleHeight + this.Dimension.InputOutputHeight;
         },
         Compute: function () {
-            //@TODO: Use this for the main computation of the image
-            throw "Override Me";
+            var i;
+            //@TODO: Use this for the main computation of the node
+
+            //@TODO: Stop loops >.<
+            for (i = 0; i < this.Predecessor.length; i += 1) {
+                this.Predecessor[i].Compute();
+            }
         }
     });
 }());
