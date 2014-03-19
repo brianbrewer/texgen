@@ -15,6 +15,9 @@ var Class = Class || chic.Class;
     brianbrewer.Data = {};
     brianbrewer.Loader = {};
 
+    // Node Identifier
+    brianbrewer.NodeID = 0;
+
     //@TODO: Move options to new file (options.js) or main.js
     // Options
     brianbrewer.Options = {

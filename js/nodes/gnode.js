@@ -15,18 +15,33 @@
             };
             this.Title = title;
             this.Dimension = {};
-            this.Predecessor = []; //@TODO: Test using this functionality / check the default value
-            this.ImageData = null;
+            this.Predecessor = [];
+            this.ImageData = null; // Use this :D
             this.Category = "Unsorted";
+            this.ID = brianbrewer.NodeID;
+            brianbrewer.NodeID += 1;
         },
         Rename: function (newName) {
             this.Title = newName;
         },
-        setPredecessor: function (node, outputname) {
-            //@TODO: Finish this
-            if (node.Output[outputname]) {
-                console.log("Well, it's there!");
+        addPredecessor: function (node) {
+            var i,
+                duplicate;
+
+            duplicate = false;
+            for (i = 0; i < this.Predecessor.length; i += 1) {
+                if (this.Predecessor[i].ID === node.ID) {
+                    duplicate = true;
+                    break;
+                }
             }
+
+            if (!duplicate) {
+                this.Predecessor.push();
+            }
+        },
+        removePredecessor: function (node) {
+            return null;
         },
         CalculateSize: function () {
             var inputHeight = 0,
@@ -74,12 +89,56 @@
         },
         Compute: function () {
             var i;
-            //@TODO: Use this for the main computation of the node
 
-            //@TODO: Stop loops >.<
+            //@TODO: Use Node.ID to remove loop possibilities
             for (i = 0; i < this.Predecessor.length; i += 1) {
                 this.Predecessor[i].Compute();
             }
         }
     });
 }());
+
+/* Nodes !!!!!!
+    <ul class="toolbox">
+        <li class="heading" data-heading="basic"><i class="fa fa-caret-down"></i> Basic</li>
+        <ul id="group-basic">
+            <li class="tool">Triangle</li>
+            <li class="tool">Quadrilateral</li>
+            <li class="tool">Point (Vector)</li>
+            <li class="tool">Matrix</li>
+            <li class="tool">Integer</li>
+        </ul>
+        <li class="heading" data-heading="tesselate"><i class="fa fa-caret-down"></i> Tesselate</li>
+        <ul id="group-tesselate">
+            <li class="tool">Square</li>
+            <li class="tool">Rectangle</li>
+            <li class="tool">Regular Triangle</li>
+            <li class="tool">Regular Hexagon</li>
+            <li class="tool">Arbritrary Triangle</li>
+            <li class="tool">Arbritrary Quadrilateral</li>
+        </ul>
+        <li class="heading" data-heading="generate"><i class="fa fa-caret-down"></i> Generate</li>
+        <ul id="group-generate">
+            <li class="tool">Perlin Noise</li>
+            <li class="tool">Simplex Noise</li>
+            <li class="tool">Fractional Brownian Noise</li>
+        </ul>
+        <li class="heading" data-heading="function"><i class="fa fa-caret-down"></i> Function</li>
+        <ul id="group-function">
+            <li class="tool">Inverse</li>
+            <li class="tool">Fill</li>
+            <li class="tool">Dilate</li>
+            <li class="tool">Contract</li>
+            <li class="tool">Import Image</li>
+            <li class="tool">Color Replace</li>
+            <li class="tool">Checkerboard</li>
+            <li class="tool">Mask</li>
+        </ul>
+        <li class="heading" data-heading="converter"><i class="fa fa-caret-down"></i> Converter</li>
+        <ul id="group-converter">
+            <li class="tool">Point</li>
+            <li class="tool">Shape</li>
+            <li class="tool">Integer</li>
+        </ul>
+    </ul>
+ */
