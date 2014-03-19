@@ -39,7 +39,7 @@ var Class = Class || chic.Class;
         BackgroundColor: "#f0f0f0",
         TitleBackgroundColor: "#bbb",
         InputColor: {
-            Required: "#ff0",
+            Required: "#00f",
             Optional: "#fff",
             Connected: "#0f0",
             Problem: "#f00"
@@ -72,6 +72,7 @@ var Class = Class || chic.Class;
         "Data|Integer",
         "Nodes|GNode",
         "Nodes|Triangle",
+        "Nodes|Quadrilateral",
         "Nodes|TesselateTriangle",
         "Nodes|Integer"
     ];

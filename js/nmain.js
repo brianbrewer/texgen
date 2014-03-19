@@ -196,7 +196,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
 
         // Object Adding Functionality
         $(".tool").on("click", function (e) {
-            Nodes.push(new brianbrewer.Nodes[e.target.dataset.tool](100, 100)); //@TODO: Make sure this doesn't place off screen
+            Nodes.push(new brianbrewer.Nodes[e.target.dataset.tool](-canvasOffset.X + 100, -canvasOffset.Y + 100)); //@TODO: Make sure this doesn't place off screen
         });
     };
 
@@ -258,6 +258,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             }
 
             // Link Input <--> Outputs
+            //@TODO: Check if there already exists a connection using this node.ID / output / input pair
             if (currentState === "Link") {
                 for (i = 0; i < Nodes.length; i += 1) {
                     currentNode = Nodes[i];
@@ -321,7 +322,8 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
                 console.log("Fire!");
             }
 
-            // Remove Nodes (Cleanly?)
+            // Remove Nodes
+            //@TODO: Cleanly
             if (currentState === "Remove") {
                 confirmDeletion = function (e) {
                     if (e) {
@@ -395,7 +397,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
 
                             if (Math.sqrt(Math.pow(mouseX - (currentNode.Position.X), 2) + Math.pow(mouseY - (currentNode.Position.Y + currentHeight), 2)) < 5) {
                                 // Connect the input and output
-                                if (currentLink.Type === "Output") {
+                                if (currentLink.Type === "Output" && currentNode.Input[nodeInput].Type === currentLink.Node.Output[currentLink.Data].Data.Type) {
                                     currentNode.Input[nodeInput].Data = currentLink.Node.Output[currentLink.Data].Data;
                                     currentNode.Input[nodeInput].State = "Connected";
                                     currentLink.Node.Output[currentLink.Data].State = "Connected";
@@ -419,7 +421,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
                             currentHeight += brianbrewer.NodeStyle.NodePadding;
 
                             if (Math.sqrt(Math.pow(mouseX - (currentNode.Position.X + currentNode.Dimension.NodeWidth), 2) + Math.pow(mouseY - (currentNode.Position.Y + currentHeight), 2)) < 5) {
-                                if (currentLink.Type === "Input") {
+                                if (currentLink.Type === "Input" && currentNode.Output[nodeOutput].Data.Type === currentLink.Node.Input[currentLink.Data].Type) {
                                     currentLink.Node.Input[currentLink.Data].Data = currentNode.Output[nodeOutput].Data;
                                     currentLink.Node.Input[currentLink.Data].State = "Connected";
                                     currentNode.Output[nodeOutput].State = "Connected";
@@ -653,6 +655,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             Context.Connection.lineTo(endX, endY);
         }
 
+        // Draw the current connection during dragging
         Context.Connection.moveTo(canvasOffset.X + currentConnection.x1, canvasOffset.Y + currentConnection.y1);
         Context.Connection.lineTo(canvasOffset.X + currentConnection.x2, canvasOffset.Y + currentConnection.y2);
         Context.Connection.stroke();
