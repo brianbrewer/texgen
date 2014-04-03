@@ -4,6 +4,7 @@
 var brianbrewer = brianbrewer || {};
 
 //@TODO: Save state, nodes, positions and everything else using localstorage
+//@TODO: Add settings, as it's a little bare at the moment
 brianbrewer.Interface = brianbrewer.Interface || (function () {
     "use strict";
 
@@ -196,7 +197,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
 
         // Object Adding Functionality
         $(".tool").on("click", function (e) {
-            Nodes.push(new brianbrewer.Nodes[e.target.dataset.tool](-canvasOffset.X + 100, -canvasOffset.Y + 100)); //@TODO: Make sure this doesn't place off screen
+            Nodes.push(new brianbrewer.Nodes[e.target.dataset.tool](-canvasOffset.X + 100, -canvasOffset.Y + 100));
         });
     };
 
@@ -220,6 +221,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
 
         canvasMouseDownHandler = function (e) {
             var i,
+                j,
                 mouseX,
                 mouseY,
                 currentHeight,
@@ -258,7 +260,6 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             }
 
             // Link Input <--> Outputs
-            //@TODO: Check if there already exists a connection using this node.ID / output / input pair
             if (currentState === "Link") {
                 for (i = 0; i < Nodes.length; i += 1) {
                     currentNode = Nodes[i];
@@ -270,6 +271,16 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
                             currentHeight += brianbrewer.NodeStyle.NodePadding;
 
                             if (Math.sqrt(Math.pow(mouseX - (currentNode.Position.X), 2) + Math.pow(mouseY - (currentNode.Position.Y + currentHeight), 2)) < 5) {
+
+                                // Check if there is already an existing connection
+                                for (j = 0; j < Connections.length; j += 1) {
+                                    if (Connections[j].InputNode.ID === currentNode.ID && Connections[j].InputData === nodeInput) {
+                                        Connections[j].InputNode.Input[Connections[j].InputData].Connected = false;
+                                        Connections[j].OutputNode.Output[Connections[j].OutputData].Connected = false;
+                                        Connections.splice(j, 1);
+                                    }
+                                }
+
                                 currentLink.Type = "Input";
                                 currentLink.Node = Nodes[i];
                                 currentLink.Data = nodeInput;
@@ -296,6 +307,16 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
                             currentHeight += brianbrewer.NodeStyle.NodePadding;
 
                             if (Math.sqrt(Math.pow(mouseX - (currentNode.Position.X + currentNode.Dimension.NodeWidth), 2) + Math.pow(mouseY - (currentNode.Position.Y + currentHeight), 2)) < 5) {
+
+                                // Check if there is already an existing connection
+                                for (j = 0; j < Connections.length; j += 1) {
+                                    if (Connections[j].OutputNode.ID === currentNode.ID && Connections[j].OutputData === nodeOutput) {
+                                        Connections[j].InputNode.Input[Connections[j].InputData].Connected = false;
+                                        Connections[j].OutputNode.Output[Connections[j].OutputData].Connected = false;
+                                        Connections.splice(j, 1);
+                                    }
+                                }
+
                                 currentLink.Type = "Output";
                                 currentLink.Node = Nodes[i];
                                 currentLink.Data = nodeOutput;
@@ -375,6 +396,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
 
         canvasMouseUpHandler = function (e) {
             var i,
+                j,
                 currentHeight,
                 nodeInput,
                 nodeOutput,
@@ -396,11 +418,21 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
                             currentHeight += brianbrewer.NodeStyle.NodePadding;
 
                             if (Math.sqrt(Math.pow(mouseX - (currentNode.Position.X), 2) + Math.pow(mouseY - (currentNode.Position.Y + currentHeight), 2)) < 5) {
+
+                                // Check if there is already an existing connection
+                                for (j = 0; j < Connections.length; j += 1) {
+                                    if (Connections[j].InputNode.ID === currentNode.ID && Connections[j].InputData === nodeInput) {
+                                        Connections[j].InputNode.Input[Connections[j].InputData].Connected = false;
+                                        Connections[j].OutputNode.Output[Connections[j].OutputData].Connected = false;
+                                        Connections.splice(j, 1);
+                                    }
+                                }
+
                                 // Connect the input and output
                                 if (currentLink.Type === "Output" && currentNode.Input[nodeInput].Type === currentLink.Node.Output[currentLink.Data].Data.Type) {
                                     currentNode.Input[nodeInput].Data = currentLink.Node.Output[currentLink.Data].Data;
-                                    currentNode.Input[nodeInput].State = "Connected";
-                                    currentLink.Node.Output[currentLink.Data].State = "Connected";
+                                    currentNode.Input[nodeInput].Connected = true;
+                                    currentLink.Node.Output[currentLink.Data].Connected = true;
                                     Connections.push({
                                         InputNode: currentNode,
                                         InputData: nodeInput,
@@ -421,10 +453,20 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
                             currentHeight += brianbrewer.NodeStyle.NodePadding;
 
                             if (Math.sqrt(Math.pow(mouseX - (currentNode.Position.X + currentNode.Dimension.NodeWidth), 2) + Math.pow(mouseY - (currentNode.Position.Y + currentHeight), 2)) < 5) {
+
+                                // Check if there is already an existing connection
+                                for (j = 0; j < Connections.length; j += 1) {
+                                    if (Connections[j].OutputNode.ID === currentNode.ID && Connections[j].OutputData === nodeOutput) {
+                                        Connections[j].InputNode.Input[Connections[j].InputData].Connected = false;
+                                        Connections[j].OutputNode.Output[Connections[j].OutputData].Connected = false;
+                                        Connections.splice(j, 1);
+                                    }
+                                }
+
                                 if (currentLink.Type === "Input" && currentNode.Output[nodeOutput].Data.Type === currentLink.Node.Input[currentLink.Data].Type) {
                                     currentLink.Node.Input[currentLink.Data].Data = currentNode.Output[nodeOutput].Data;
-                                    currentLink.Node.Input[currentLink.Data].State = "Connected";
-                                    currentNode.Output[nodeOutput].State = "Connected";
+                                    currentLink.Node.Input[currentLink.Data].Connected = true;
+                                    currentNode.Output[nodeOutput].Connected = true;
                                     Connections.push({
                                         InputNode: currentLink.Node,
                                         InputData: currentLink.Data,
@@ -500,7 +542,8 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             currentHeight,
             nodeInput,
             nodeOutput,
-            currentInput;
+            currentInput,
+            currentOutput;
 
         // Clear canvas
         Canvas.Nodes.width = Canvas.App.width;
@@ -562,12 +605,13 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
                     Context.Nodes.beginPath();
 
                     // Set Colour
-                    if (currentInput.State === "Disconnected") { Context.Nodes.fillStyle = currentInput.Required ? brianbrewer.NodeStyle.InputColor.Required : brianbrewer.NodeStyle.InputColor.Optional; }
-                    if (currentInput.State === "Connected") { Context.Nodes.fillStyle = brianbrewer.NodeStyle.InputColor.Connected; }
-                    if (currentInput.State === "Problem") { Context.Nodes.fillStyle = brianbrewer.NodeStyle.InputColor.Problem; }
+                    if (currentInput.Connected) {
+                        Context.Nodes.fillStyle = brianbrewer.NodeStyle.InputColor.Connected;
+                    } else {
+                        Context.Nodes.fillStyle = currentInput.Required ? brianbrewer.NodeStyle.InputColor.Required : brianbrewer.NodeStyle.InputColor.Optional;
+                    }
 
                     // Draw input spheres
-                    Context.Nodes.fillStyle = brianbrewer.NodeStyle.InputColor[currentNode.Input[nodeInput].State];
                     currentHeight += brianbrewer.NodeStyle.NodePadding;
                     Context.Nodes.arc(canvasOffset.X + currentNode.Position.X, canvasOffset.Y + currentNode.Position.Y + currentHeight, 5, 0, Math.PI * 2, false);
                     currentHeight += brianbrewer.NodeStyle.FontSize;
@@ -579,8 +623,17 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             currentHeight = currentNode.Dimension.TitleHeight + brianbrewer.NodeStyle.NodePadding;
             for (nodeOutput in currentNode.Output) {
                 if (currentNode.Output.hasOwnProperty(nodeOutput)) {
+                    currentOutput = currentNode.Output[nodeOutput];
+
                     Context.Nodes.beginPath();
-                    Context.Nodes.fillStyle = brianbrewer.NodeStyle.OutputColor[currentNode.Output[nodeOutput].State];
+
+                    // Set color
+                    if (currentOutput.Connected) {
+                        Context.Nodes.fillStyle = brianbrewer.NodeStyle.OutputColor.Connected;
+                    } else {
+                        Context.Nodes.fillStyle = brianbrewer.NodeStyle.OutputColor.Disconnected;
+                    }
+
                     currentHeight += brianbrewer.NodeStyle.NodePadding;
                     Context.Nodes.arc(canvasOffset.X + currentNode.Position.X + currentNode.Dimension.NodeWidth, canvasOffset.Y + currentNode.Position.Y + currentHeight, 5, 0, Math.PI * 2, false);
                     currentHeight += brianbrewer.NodeStyle.FontSize;
@@ -665,7 +718,9 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
         Initialise: initialise,
         Options: Options,
         Canvas: Canvas,
-        Context: Context
+        Context: Context,
+        Connections: Connections,
+        Nodes: Nodes
     };
 }());
 

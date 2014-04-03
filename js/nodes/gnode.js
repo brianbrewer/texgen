@@ -18,6 +18,7 @@
             this.Predecessor = [];
             this.ImageData = null; // Use this :D
             this.Category = "Unsorted";
+
             this.ID = brianbrewer.NodeID;
             brianbrewer.NodeID += 1;
         },
@@ -41,7 +42,14 @@
             }
         },
         removePredecessor: function (node) {
-            return null;
+            var i;
+
+            for (i = 0; i < this.Predecessor.length; i += 1) {
+                if (this.Predecessor[i].ID === node.ID) {
+                    this.Predecessor.splice(i, 1);
+                    break;
+                }
+            }
         },
         CalculateSize: function () {
             var inputHeight = 0,

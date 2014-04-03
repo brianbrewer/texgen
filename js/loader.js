@@ -41,8 +41,7 @@ var Class = Class || chic.Class;
         InputColor: {
             Required: "#00f",
             Optional: "#fff",
-            Connected: "#0f0",
-            Problem: "#f00"
+            Connected: "#0f0"
         },
         OutputColor: {
             Disconnected: "#bbb",
@@ -55,14 +54,14 @@ var Class = Class || chic.Class;
             this.Data = null;
             this.Type = type;
             this.Required = required;
-            this.State = "Disconnected";
+            this.Connected = false;
         }
     });
 
     brianbrewer.Output = Class.extend({
         init: function (data) {
             this.Data = data;
-            this.State = "Disconnected";
+            this.Connected = false;
         }
     });
 
@@ -73,7 +72,8 @@ var Class = Class || chic.Class;
         "Nodes|GNode",
         "Nodes|Triangle",
         "Nodes|Quadrilateral",
-        "Nodes|TesselateTriangle",
+        "Nodes|TessellateTriangle",
+        "Nodes|TessellateQuadrilateral",
         "Nodes|Integer"
     ];
 
