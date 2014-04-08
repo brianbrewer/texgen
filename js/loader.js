@@ -74,7 +74,8 @@ var Class = Class || chic.Class;
         "Nodes|Quadrilateral",
         "Nodes|TessellateTriangle",
         "Nodes|TessellateQuadrilateral",
-        "Nodes|Integer"
+        "Nodes|Integer",
+        "Nodes|Point"
     ];
 
     testfunction = function (type, name) {

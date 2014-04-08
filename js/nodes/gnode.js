@@ -95,12 +95,25 @@
             this.Dimension.PreviewX = (this.Dimension.NodeWidth - this.Dimension.PreviewWidth) / 2;
             this.Dimension.PreviewY = this.Dimension.TitleHeight + this.Dimension.InputOutputHeight;
         },
-        Compute: function () {
-            var i;
+        Compute: function (toComputeList) {
+            var i,
+                j,
+                duplicate;
 
-            //@TODO: Use Node.ID to remove loop possibilities
+            // Use ID and a list to compute distinct predecessors
             for (i = 0; i < this.Predecessor.length; i += 1) {
-                this.Predecessor[i].Compute();
+                duplicate = false;
+                for (j = 0; j < toComputeList.length; j += 1) {
+                    if (this.Predecessor[i].ID === toComputeList[j].ID) {
+                        duplicate = true;
+                        break;
+                    }
+
+                    if (!duplicate) {
+                        toComputeList.push(this.Predecessor[i]);
+                        this.Predecessor[i].Compute(toComputeList);
+                    }
+                }
             }
         }
     });
