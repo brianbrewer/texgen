@@ -129,3 +129,21 @@ body {
 
 .collapse {
 }
+
+.data {
+    background-color: #e0e0e0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.data label {
+    display: inline-block;
+    margin-left: 5px;
+    width: 20% !important;
+}
+
+.data input {
+    width: 75% !important;
+}

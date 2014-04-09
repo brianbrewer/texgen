@@ -6,7 +6,7 @@
         init: function (x, y) {
             this.sup(x, y, "Point");
 
-            this.Output.Point = new brianbrewer.Output(new brianbrewer.Data.Point(0, 0));
+            this.Output.Point = new brianbrewer.Output(new brianbrewer.Data.Point(0, 0, true));
 
             this.Category = "Basic";
 

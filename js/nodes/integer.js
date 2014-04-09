@@ -6,7 +6,7 @@
         init: function (x, y) {
             this.sup(x, y, "Integer");
 
-            this.Output.Value = new brianbrewer.Output(new brianbrewer.Data.Integer(0));
+            this.Output.Value = new brianbrewer.Output(new brianbrewer.Data.Integer(0, true));
 
             this.Category = "Basic";
 

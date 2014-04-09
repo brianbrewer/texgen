@@ -15,13 +15,11 @@ brianbrewer.Handler = brianbrewer.Handler || {};
             mouseX,
             mouseY,
             Nodes,
-            Canvas,
             canvasOffset,
             snapObject;
 
         // Setup variables
         Nodes = brianbrewer.Interface.Nodes;
-        Canvas = brianbrewer.Interface.Canvas;
         canvasOffset = brianbrewer.Interface.CanvasOffset;
         snapObject = brianbrewer.Interface.getSnapObject();
 
