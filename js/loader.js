@@ -8,7 +8,8 @@ var Class = Class || chic.Class;
  */
 (function () {
     "use strict";
-    var testfunction;
+    var testfunction,
+        nodeID;
 
     // NameSpaces
     brianbrewer.Nodes = {};
@@ -16,7 +17,7 @@ var Class = Class || chic.Class;
     brianbrewer.Loader = {};
 
     // Node Identifier
-    brianbrewer.NodeID = 0;
+    nodeID = 0;
 
     //@TODO: Move options to new file (options.js) or main.js
     // Options
@@ -105,5 +106,8 @@ var Class = Class || chic.Class;
         toast(toload, callback);
     };
 
-    brianbrewer.Loader.List = function () { console.log(null); };
+    brianbrewer.getNodeID = function () {
+        nodeID += 1;
+        return nodeID;
+    };
 }());

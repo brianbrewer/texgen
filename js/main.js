@@ -220,277 +220,81 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             };
 
         canvasMouseDownHandler = function (e) {
-            var i,
-                j,
-                mouseX,
-                mouseY,
-                currentHeight,
-                nodeInput,
-                nodeOutput,
-                confirmDeletion;
+            var attachListeners;
 
-            // Calculate the current mouse X and Y offset
-            mouseX = -canvasOffset.X + e.clientX + (snapObject.state().state === "left" ? -200 : 0) + (snapObject.state().state === "right" ? 200 : 0);
-            mouseY = -canvasOffset.Y + e.clientY - 45;
-
-            // Pan Entire Canvas
-            if (currentState === "Pan") {
-                offsetX = e.clientX;
-                offsetY = e.clientY;
-
+            attachListeners = function () {
+                // Add move / up listeners
                 Canvas.App.addEventListener("mousemove", canvasMouseMoveHandler);
                 Canvas.App.addEventListener("mouseup", canvasMouseUpHandler);
 
-                brianbrewer.Handler.PanStart();
+                // Start drawing process
                 canvasDrawLoop();
-            }
 
-            // Move Individual Nodes
-            if (currentState === "Move") {
-                for (i = Nodes.length - 1; i >= 0; i -= 1) {
-                    if (mouseX > Nodes[i].Position.X && mouseX < Nodes[i].Position.X + Nodes[i].Dimension.NodeWidth && mouseY > Nodes[i].Position.Y && mouseY < Nodes[i].Position.Y + Nodes[i].Dimension.NodeHeight) {
-                        offsetX = mouseX - Nodes[i].Position.X;
-                        offsetY = mouseY - Nodes[i].Position.Y;
-                        currentNode = i;
+                return true;
+            };
 
-                        Canvas.App.addEventListener("mousemove", canvasMouseMoveHandler);
-                        Canvas.App.addEventListener("mouseup", canvasMouseUpHandler);
-                        canvasDrawLoop();
-                        break;
-                    }
-                }
-            }
-
-            // Link Input <--> Outputs
-            if (currentState === "Link") {
-                for (i = 0; i < Nodes.length; i += 1) {
-                    currentNode = Nodes[i];
-
-                    // Check against inputs
-                    currentHeight = currentNode.Dimension.TitleHeight + brianbrewer.NodeStyle.NodePadding;
-                    for (nodeInput in currentNode.Input) {
-                        if (currentNode.Input.hasOwnProperty(nodeInput)) {
-                            currentHeight += brianbrewer.NodeStyle.NodePadding;
-
-                            if (Math.sqrt(Math.pow(mouseX - (currentNode.Position.X), 2) + Math.pow(mouseY - (currentNode.Position.Y + currentHeight), 2)) < 5) {
-
-                                // Check if there is already an existing connection
-                                for (j = 0; j < Connections.length; j += 1) {
-                                    if (Connections[j].InputNode.ID === currentNode.ID && Connections[j].InputData === nodeInput) {
-                                        Connections[j].InputNode.Input[Connections[j].InputData].Connected = false;
-                                        Connections[j].OutputNode.Output[Connections[j].OutputData].Connected = false;
-                                        Connections.splice(j, 1);
-                                    }
-                                }
-
-                                currentLink.Type = "Input";
-                                currentLink.Node = Nodes[i];
-                                currentLink.Data = nodeInput;
-
-                                currentConnection.x1 = currentNode.Position.X;
-                                currentConnection.y1 = currentNode.Position.Y + currentHeight;
-                                currentConnection.x2 = mouseX;
-                                currentConnection.y2 = mouseY;
-
-                                Canvas.App.addEventListener("mousemove", canvasMouseMoveHandler);
-                                Canvas.App.addEventListener("mouseup", canvasMouseUpHandler);
-                                canvasDrawLoop();
-
-                                break;
-                            }
-                            currentHeight += brianbrewer.NodeStyle.FontSize;
-                        }
-                    }
-
-                    // Check against outputs
-                    currentHeight = currentNode.Dimension.TitleHeight + brianbrewer.NodeStyle.NodePadding;
-                    for (nodeOutput in currentNode.Output) {
-                        if (currentNode.Output.hasOwnProperty(nodeOutput)) {
-                            currentHeight += brianbrewer.NodeStyle.NodePadding;
-
-                            if (Math.sqrt(Math.pow(mouseX - (currentNode.Position.X + currentNode.Dimension.NodeWidth), 2) + Math.pow(mouseY - (currentNode.Position.Y + currentHeight), 2)) < 5) {
-
-                                // Check if there is already an existing connection
-                                for (j = 0; j < Connections.length; j += 1) {
-                                    if (Connections[j].OutputNode.ID === currentNode.ID && Connections[j].OutputData === nodeOutput) {
-                                        Connections[j].InputNode.Input[Connections[j].InputData].Connected = false;
-                                        Connections[j].OutputNode.Output[Connections[j].OutputData].Connected = false;
-                                        Connections.splice(j, 1);
-                                    }
-                                }
-
-                                currentLink.Type = "Output";
-                                currentLink.Node = Nodes[i];
-                                currentLink.Data = nodeOutput;
-
-                                currentConnection.x1 = currentNode.Position.X + currentNode.Dimension.NodeWidth;
-                                currentConnection.y1 = currentNode.Position.Y + currentHeight;
-                                currentConnection.x2 = currentConnection.x1;
-                                currentConnection.y2 = currentConnection.y1;
-
-                                Canvas.App.addEventListener("mousemove", canvasMouseMoveHandler);
-                                Canvas.App.addEventListener("mouseup", canvasMouseUpHandler);
-                                canvasDrawLoop();
-
-                                break;
-                            }
-                            currentHeight += brianbrewer.NodeStyle.FontSize;
-                        }
-                    }
-                }
-            }
-
-            // Edit
-            if (currentState === "Edit") {
-                console.log("Fire!");
-            }
-
-            // Remove Nodes
-            //@TODO: Cleanly
-            if (currentState === "Remove") {
-                confirmDeletion = function (e) {
-                    if (e) {
-                        console.log("Removing");
-                    }
-                };
-
-                for (i = Nodes.length - 1; i >= 0; i -= 1) {
-                    if (mouseX > Nodes[i].Position.X && mouseX < Nodes[i].Position.X + Nodes[i].Dimension.NodeWidth && mouseY > Nodes[i].Position.Y && mouseY < Nodes[i].Position.Y + Nodes[i].Dimension.NodeHeight) {
-                        alertify.confirm("Remove '" + Nodes[i].Title + "' Node and all it's connections?", confirmDeletion);
-                        break;
-                    }
-                }
+            // Use && to only draw / attach when xStart() returns true
+            // return statement saves the use of breaks and quickly ends function
+            switch (currentState) {
+            case "Pan":
+                return brianbrewer.Handler.PanStart(e) && attachListeners();
+            case "Move":
+                return brianbrewer.Handler.MoveStart(e) && attachListeners();
+            case "Link":
+                return brianbrewer.Handler.LinkStart(e) && attachListeners();
+            case "Edit":
+                return brianbrewer.Handler.EditStart(e) && attachListeners();
+            case "Remove":
+                return brianbrewer.Handler.RemoveStart(e) && attachListeners();
+            default:
+                break;
             }
         };
 
         canvasMouseMoveHandler = function (e) {
-            var mouseX,
-                mouseY;
-
-            mouseX = -canvasOffset.X + e.clientX + (snapObject.state().state === "left" ? -200 : 0) + (snapObject.state().state === "right" ? 200 : 0);
-            mouseY = -canvasOffset.Y + e.clientY - 45;
-
-            // Increment Canvas Offset based on mouse change
-            if (currentState === "Pan") {
-                canvasOffset.X += e.clientX - offsetX;
-                canvasOffset.Y += e.clientY - offsetY;
-
-                offsetX = e.clientX;
-                offsetY = e.clientY;
-            }
-
-            // Update position of Node
-            if (currentState === "Move") {
-                Nodes[currentNode].Position.X = mouseX - offsetX;
-                Nodes[currentNode].Position.Y = mouseY - offsetY;
-            }
-
-            // Draw line from nodes to mouse
-            if (currentState === "Link") {
-                currentConnection.x2 = mouseX;
-                currentConnection.y2 = mouseY;
-            }
-
-            if (currentState === "Remove") {
-                return null;
+            switch (currentState) {
+            case "Pan":
+                brianbrewer.Handler.PanDuring(e);
+                break;
+            case "Move":
+                brianbrewer.Handler.MoveDuring(e);
+                break;
+            case "Link":
+                brianbrewer.Handler.LinkDuring(e);
+                break;
+            case "Edit":
+                brianbrewer.Handler.EditDuring(e);
+                break;
+            case "Remove":
+                brianbrewer.Handler.RemoveDuring(e);
+                break;
+            default:
+                break;
             }
         };
 
         canvasMouseUpHandler = function (e) {
-            var i,
-                j,
-                currentHeight,
-                nodeInput,
-                nodeOutput,
-                mouseX,
-                mouseY;
-
-            mouseX = -canvasOffset.X + e.clientX + (snapObject.state().state === "left" ? -200 : 0) + (snapObject.state().state === "right" ? 200 : 0);
-            mouseY = -canvasOffset.Y + e.clientY - 45;
-
-            // Confirm link between nodes
-            if (currentState === "Link") {
-                for (i = 0; i < Nodes.length; i += 1) {
-                    currentNode = Nodes[i];
-
-                    // Check against inputs
-                    currentHeight = currentNode.Dimension.TitleHeight + brianbrewer.NodeStyle.NodePadding;
-                    for (nodeInput in currentNode.Input) {
-                        if (currentNode.Input.hasOwnProperty(nodeInput)) {
-                            currentHeight += brianbrewer.NodeStyle.NodePadding;
-
-                            if (Math.sqrt(Math.pow(mouseX - (currentNode.Position.X), 2) + Math.pow(mouseY - (currentNode.Position.Y + currentHeight), 2)) < 5) {
-
-                                // Check if there is already an existing connection
-                                for (j = 0; j < Connections.length; j += 1) {
-                                    if (Connections[j].InputNode.ID === currentNode.ID && Connections[j].InputData === nodeInput) {
-                                        Connections[j].InputNode.Input[Connections[j].InputData].Connected = false;
-                                        Connections[j].OutputNode.Output[Connections[j].OutputData].Connected = false;
-                                        Connections.splice(j, 1);
-                                    }
-                                }
-
-                                // Connect the input and output
-                                if (currentLink.Type === "Output" && currentNode.Input[nodeInput].Type === currentLink.Node.Output[currentLink.Data].Data.Type) {
-                                    currentNode.Input[nodeInput].Data = currentLink.Node.Output[currentLink.Data].Data;
-                                    currentNode.Input[nodeInput].Connected = true;
-                                    currentLink.Node.Output[currentLink.Data].Connected = true;
-                                    Connections.push({
-                                        InputNode: currentNode,
-                                        InputData: nodeInput,
-                                        OutputNode: currentLink.Node,
-                                        OutputData: currentLink.Data
-                                    });
-                                }
-                                break;
-                            }
-                            currentHeight += brianbrewer.NodeStyle.FontSize;
-                        }
-                    }
-
-                    // Check against outputs
-                    currentHeight = currentNode.Dimension.TitleHeight + brianbrewer.NodeStyle.NodePadding;
-                    for (nodeOutput in currentNode.Output) {
-                        if (currentNode.Output.hasOwnProperty(nodeOutput)) {
-                            currentHeight += brianbrewer.NodeStyle.NodePadding;
-
-                            if (Math.sqrt(Math.pow(mouseX - (currentNode.Position.X + currentNode.Dimension.NodeWidth), 2) + Math.pow(mouseY - (currentNode.Position.Y + currentHeight), 2)) < 5) {
-
-                                // Check if there is already an existing connection
-                                for (j = 0; j < Connections.length; j += 1) {
-                                    if (Connections[j].OutputNode.ID === currentNode.ID && Connections[j].OutputData === nodeOutput) {
-                                        Connections[j].InputNode.Input[Connections[j].InputData].Connected = false;
-                                        Connections[j].OutputNode.Output[Connections[j].OutputData].Connected = false;
-                                        Connections.splice(j, 1);
-                                    }
-                                }
-
-                                if (currentLink.Type === "Input" && currentNode.Output[nodeOutput].Data.Type === currentLink.Node.Input[currentLink.Data].Type) {
-                                    currentLink.Node.Input[currentLink.Data].Data = currentNode.Output[nodeOutput].Data;
-                                    currentLink.Node.Input[currentLink.Data].Connected = true;
-                                    currentNode.Output[nodeOutput].Connected = true;
-                                    Connections.push({
-                                        InputNode: currentLink.Node,
-                                        InputData: currentLink.Data,
-                                        OutputNode: currentNode,
-                                        OutputData: nodeOutput
-                                    });
-                                }
-                                break;
-                            }
-                            currentHeight += brianbrewer.NodeStyle.FontSize;
-                        }
-                    }
-                }
-
-                currentConnection = {
-                    x1: 0,
-                    y1: 0,
-                    x2: 0,
-                    y2: 0
-                };
+            switch (currentState) {
+            case "Pan":
+                brianbrewer.Handler.PanEnd(e);
+                break;
+            case "Move":
+                brianbrewer.Handler.MoveEnd(e);
+                break;
+            case "Link":
+                brianbrewer.Handler.LinkEnd(e);
+                break;
+            case "Edit":
+                brianbrewer.Handler.EditEnd(e);
+                break;
+            case "Remove":
+                brianbrewer.Handler.RemoveEnd(e);
+                break;
+            default:
+                break;
             }
 
+            // Remove event listeners
             Canvas.App.removeEventListener("mousemove", canvasMouseMoveHandler);
             Canvas.App.removeEventListener("mouseup", canvasMouseUpHandler);
 
@@ -501,9 +305,8 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             Context.App.drawImage(Canvas.Nodes, 0, 0);
             Context.App.drawImage(Canvas.Connection, 0, 0);
 
+            // Stop drawing loop
             window.clearTimeout(canvasDrawHandler);
-
-            currentNode = null;
         };
 
         canvasDrawLoop = function () {
@@ -722,7 +525,10 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
         Canvas: Canvas,
         Context: Context,
         Connections: Connections,
-        Nodes: Nodes
+        Nodes: Nodes,
+        CanvasOffset: canvasOffset,
+        getSnapObject: function () { return snapObject; },
+        CurrentConnection: currentConnection
     };
 }());
 

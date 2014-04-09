@@ -16,30 +16,27 @@
             this.Title = title;
             this.Dimension = {};
             this.Predecessor = [];
-            this.ImageData = null; // Use this :D
+            this.ImageData = null; // Use this for actual image data
             this.Category = "Unsorted";
 
-            this.ID = brianbrewer.NodeID;
-            brianbrewer.NodeID += 1;
+            // Working with chic means assigning id's to things is a little finicky
+            if (typeof x !== "undefined") {
+                this.ID = brianbrewer.getNodeID();
+            }
         },
         Rename: function (newName) {
             this.Title = newName;
         },
         addPredecessor: function (node) {
-            var i,
-                duplicate;
+            var i;
 
-            duplicate = false;
             for (i = 0; i < this.Predecessor.length; i += 1) {
                 if (this.Predecessor[i].ID === node.ID) {
-                    duplicate = true;
-                    break;
+                    return;
                 }
             }
 
-            if (!duplicate) {
-                this.Predecessor.push();
-            }
+            this.Predecessor.push(node);
         },
         removePredecessor: function (node) {
             var i;

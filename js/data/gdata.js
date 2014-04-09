@@ -6,8 +6,9 @@
 
     // Base Graphical Data Node
     brianbrewer.Data.GData = Class.extend({
-        init: function () {
+        init: function (editable) {
             this.Type = "Undefined";
+            this.Editable = typeof editable !== "undefined" && editable;
         }
     });
 }());

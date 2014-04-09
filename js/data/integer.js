@@ -5,8 +5,8 @@
 
     // Base Graphical Data Node
     brianbrewer.Data.Integer = brianbrewer.Data.GData.extend({
-        init: function (i) {
-            this.sup();
+        init: function (i, editable) {
+            this.sup(editable);
 
             this.I = i;
 
