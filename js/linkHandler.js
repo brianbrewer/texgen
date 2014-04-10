@@ -4,6 +4,7 @@
 var brianbrewer = brianbrewer || {};
 brianbrewer.Handler = brianbrewer.Handler || {};
 
+//@TODO: Fix predecessor adding behaviour
 (function () {
     "use strict";
     var currentLink = {

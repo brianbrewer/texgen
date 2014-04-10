@@ -9,7 +9,6 @@ brianbrewer.Handler = brianbrewer.Handler || {};
     var editingNode;
 
     editingNode = -1;
-    //@TODO: Check if there are any editable fields before showing popup D:
     brianbrewer.Handler.EditStart = function (e) {
         var i,
             Nodes,
@@ -80,7 +79,7 @@ brianbrewer.Handler = brianbrewer.Handler || {};
             }
         }
 
-        // Test dialogue
+        // Final dialog
         vex.dialog.open({
             message: "Editing \"" + Nodes[editingNode].Title + "\"",
             input: inputString,

@@ -27,7 +27,6 @@ var Class = Class || chic.Class;
     };
 
     // NodeStyle
-    //@TODO: Update to work with new input design
     brianbrewer.NodeStyle = {
         FontSize: 10,
         FontColor: "#333",
@@ -86,7 +85,6 @@ var Class = Class || chic.Class;
     };
 
     // Load /data and /nodes
-    //@TODO: Clean this up << Success
     brianbrewer.Loader.Load = function (callback) {
         var type,
             name,

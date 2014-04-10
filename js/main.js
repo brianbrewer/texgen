@@ -13,9 +13,11 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
         setupSnap,
         setupToolbar,
         setupToolDrawer,
+        setupOptionDrawer,
         setupCanvas,
         drawNodes,
         drawConnections,
+        drawAll,
     //Variables
         snapObject,
         Canvas = {
@@ -47,12 +49,13 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
         };
 
     /**
-     * Description.
+     * Intialises all the components of the user interface
      */
     initialise = function () {
         setupSnap();
         setupCanvas();
         setupToolDrawer();
+        setupOptionDrawer();
         setupToolbar();
     };
 
@@ -198,7 +201,15 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
         // Object Adding Functionality
         $(".tool").on("click", function (e) {
             Nodes.push(new brianbrewer.Nodes[e.target.dataset.tool](-canvasOffset.X + 100, -canvasOffset.Y + 100));
+            brianbrewer.Interface.Draw();
         });
+    };
+
+    /*
+     * Description
+     */
+    setupOptionDrawer = function () {
+
     };
 
     /*
@@ -311,11 +322,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
 
         canvasDrawLoop = function () {
             canvasDrawHandler = window.setTimeout(canvasDrawLoop, 1000 / 30); // 30 fps drawing
-            Context.App.clearRect(0, 0, Canvas.App.width, Canvas.App.height);
-            drawNodes();
-            drawConnections();
-            Context.App.drawImage(Canvas.Nodes, 0, 0);
-            Context.App.drawImage(Canvas.Connection, 0, 0);
+            drawAll();
         };
 
         // Setup canvas' and contexts
@@ -336,6 +343,17 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
 
         // Add event listener to app canvas
         Canvas.App.addEventListener("mousedown", canvasMouseDownHandler);
+    };
+
+    /*
+     * Draw connections, nodes and refresh the entire canvas
+     */
+    drawAll = function () {
+        Context.App.clearRect(0, 0, Canvas.App.width, Canvas.App.height);
+        drawNodes();
+        drawConnections();
+        Context.App.drawImage(Canvas.Nodes, 0, 0);
+        Context.App.drawImage(Canvas.Connection, 0, 0);
     };
 
     /*
@@ -528,7 +546,8 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
         Nodes: Nodes,
         CanvasOffset: canvasOffset,
         getSnapObject: function () { return snapObject; },
-        CurrentConnection: currentConnection
+        CurrentConnection: currentConnection,
+        Draw: drawAll
     };
 }());
 

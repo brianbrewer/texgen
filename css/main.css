@@ -127,6 +127,36 @@ body {
 	color: #fff;
 }
 
+.options {
+    list-style: none;
+    width: 100%;
+}
+
+.options .option {
+    height: 50px;
+    background-color: #e0e0e0;
+    margin-bottom: 5px;
+    display: block;
+    line-height: 50px;
+    text-align: center;
+    font-family: arial;
+    
+    cursor: default;
+    font-size: 14px;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.options .option:hover {
+    background-color: #ff8c00;
+    color: #fff;
+}
+
 .collapse {
 }
 
