@@ -21,7 +21,8 @@ brianbrewer.Handler = brianbrewer.Handler || {};
             outputName,
             currentOutput,
             dataPatternRaw,
-            dataPatternParsed;
+            dataPatternParsed,
+            editableCount;
 
         Nodes = brianbrewer.Interface.Nodes;
         canvasOffset = brianbrewer.Interface.CanvasOffset;
@@ -35,6 +36,18 @@ brianbrewer.Handler = brianbrewer.Handler || {};
         for (i = Nodes.length - 1; i >= 0; i -= 1) {
             if (mouseX > Nodes[i].Position.X && mouseX < Nodes[i].Position.X + Nodes[i].Dimension.NodeWidth && mouseY > Nodes[i].Position.Y && mouseY < Nodes[i].Position.Y + Nodes[i].Dimension.NodeHeight) {
                 editingNode = i;
+                editableCount = 0;
+
+                //  Check to see if there are editable fields
+                for (outputName in Nodes[i].Output) {
+                    if (Nodes[i].Output.hasOwnProperty(outputName) && Nodes[i].Output[outputName].Data.Editable) {
+                        editableCount += 1;
+                        break;
+                    }
+                }
+                if (editableCount < 1) {
+                    return false;
+                }
             }
         }
 
@@ -43,6 +56,7 @@ brianbrewer.Handler = brianbrewer.Handler || {};
             return false;
         }
 
+        // Function for replacing data names with values
         function getInputName(match, $1) {
             return currentOutput.Data[$1];
         }
