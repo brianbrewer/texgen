@@ -1,10 +1,9 @@
 /*jslint browser: true, devel: true */
-/*global $, Snap, brianbrewer, alertify */
+/*global $, Snap, brianbrewer, alertify, vex */
 
 var brianbrewer = brianbrewer || {};
 
 //@TODO: Save state, nodes, positions and everything else using localstorage
-//@TODO: Add settings, as it's a little bare at the moment
 brianbrewer.Interface = brianbrewer.Interface || (function () {
     "use strict";
 
@@ -112,6 +111,15 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             $(tElement).addClass("selected");
 
             currentState = $(tElement).data("mode");
+        });
+
+        // Rendering
+        $(".nav-right .render").on("click", function (e) {
+            vex.dialog.open({
+                message: "Eh?",
+                callback: function () {
+                }
+            });
         });
     };
 
