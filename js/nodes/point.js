@@ -15,7 +15,15 @@
         Compute: function () {
             this.sup();
 
-            console.log("Rendering " + this.Title);
+            var context;
+
+            // Clear Canvas and reset size if changed
+            this.ComputeCanvas.width = brianbrewer.Options.renderWidth;
+            this.ComputeCanvas.height = brianbrewer.Options.renderWidth;
+            context = this.ComputeCanvas.getContext("2d");
+
+            context.arc(this.Output.Point.Data.X, this.Output.Point.Data.Y, 1, 0, 2 * Math.PI);
+            context.stroke();
         }
     });
 }());

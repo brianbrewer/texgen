@@ -61,7 +61,7 @@
                 isShortened = false;
 
             // Static Values
-            this.Dimension.NodeWidth = 150;
+            this.Dimension.NodeWidth = 200;
             this.Dimension.PreviewWidth = 100;
             this.Dimension.PreviewHeight = 100;
 

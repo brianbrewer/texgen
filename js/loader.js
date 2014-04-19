@@ -22,8 +22,8 @@ var Class = Class || chic.Class;
     //@TODO: Move options to new file (options.js) or main.js
     // Options
     brianbrewer.Options = {
-        renderWidth: 500,
-        renderHeight: 500
+        renderWidth: 256,
+        renderHeight: 256
     };
 
     // NodeStyle

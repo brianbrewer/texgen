@@ -18,7 +18,19 @@
         Compute: function () {
             this.sup();
 
-            console.log("Rendering " + this.Title);
+            var context;
+
+            // Clear Canvas and reset size if changed
+            this.ComputeCanvas.width = brianbrewer.Options.renderWidth;
+            this.ComputeCanvas.height = brianbrewer.Options.renderWidth;
+            context = this.ComputeCanvas.getContext("2d");
+
+            context.moveTo(this.Output.Point1.Data.X, this.Output.Point1.Data.Y);
+            context.lineTo(this.Output.Point2.Data.X, this.Output.Point2.Data.Y);
+            context.lineTo(this.Output.Point3.Data.X, this.Output.Point3.Data.Y);
+            context.lineTo(this.Output.Point4.Data.X, this.Output.Point4.Data.Y);
+            context.lineTo(this.Output.Point1.Data.X, this.Output.Point1.Data.Y);
+            context.stroke();
         }
     });
 }());

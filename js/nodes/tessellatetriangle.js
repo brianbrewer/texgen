@@ -1,4 +1,4 @@
-/*global brianbrewer, console */
+/*global brianbrewer */
 
 //@TODO: Complete
 (function () {
@@ -23,7 +23,6 @@
             var context,
                 triTesselation,
                 calculateAttachedTriangle;
-
 
             triTesselation = function (boundX, boundY, inputPoints) {
                 var canContinue,
@@ -74,7 +73,6 @@
                         isVisible = true;
                         if ((shapeBoundX1 > boundX || shapeBoundX2 < 0) || (shapeBoundY1 > boundY || shapeBoundY2 < 0)) {
                             isVisible = false;
-                            console.log(currentIndex, currentSide, "Outside Bounds", newShape);
                         }
 
                         // Check child against all older shapes (Might be faster backwards ?)
@@ -88,7 +86,6 @@
                                         exploredShapes[i][2].x === newShape[2].x &&
                                         exploredShapes[i][2].y === newShape[2].y) {
                                     isDuplicate = true;
-                                    console.log(currentIndex, currentSide, "Dupe Found", exploredShapes[i], newShape);
                                 }
                             }
                         }
@@ -96,12 +93,10 @@
                         // Add new shape to list
                         if (isVisible && !isDuplicate) {
                             exploredShapes.push(newShape);
-                            console.log(currentIndex, currentSide, "Added", newShape);
                         }
                     }
 
                     // End if no more shapes to check
-                    console.log(currentIndex, "Of", exploredShapes.length - 1);
                     if (currentIndex === exploredShapes.length - 1) {
                         canContinue = false;
                     } else {
@@ -125,7 +120,6 @@
                         for (k = 0; k < linePairs.length; k += 1) {
                             if ((currentPair.x1 === linePairs[k].x1 && currentPair.y1 === linePairs[k].y1 && currentPair.x2 === linePairs[k].x2 && currentPair.y2 === linePairs[k].y2) ||
                                     (currentPair.x1 === linePairs[k].x2 && currentPair.y1 === linePairs[k].y2 && currentPair.x2 === linePairs[k].x1 && currentPair.y2 === linePairs[k].y1)) {
-                                console.log(exploredShapes[i], currentPair, "Duplicate Line", linePairs[k]);
                                 isDuplicate = true;
                                 break;
                             }
@@ -137,7 +131,6 @@
                     }
                 }
 
-                console.log(exploredShapes.length * 3, "sides, reduced to", linePairs.length, "lines");
 
                 // Quick Line Draw
                 for (i = 0; i < linePairs.length; i += 1) {
