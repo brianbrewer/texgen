@@ -115,11 +115,10 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
 
         // Rendering
         $(".nav-right .render").on("click", function (e) {
-            vex.dialog.open({
-                message: "Eh?",
-                callback: function () {
-                }
-            });
+            $(".nav-right .render i").addClass("fa-spin");
+            window.setTimeout(function () {
+                $(".nav-right .render i").removeClass("fa-spin");
+            }, 2000);
         });
     };
 
@@ -474,8 +473,9 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
 
             // Draw Preview Window
             Context.Nodes.beginPath();
-            Context.Nodes.fillStyle = "#fff"; //@TODO: Substitute for actual image
-            Context.Nodes.fillRect(canvasOffset.X + currentNode.Position.X + currentNode.Dimension.PreviewX, canvasOffset.Y + currentNode.Position.Y + currentNode.Dimension.PreviewY, 100, 100);
+            Context.Nodes.fillStyle = "#fff"; // Background Colour
+            Context.Nodes.fillRect(canvasOffset.X + currentNode.Position.X + currentNode.Dimension.PreviewX, canvasOffset.Y + currentNode.Position.Y + currentNode.Dimension.PreviewY, 100, 100); // Draw Background
+            Context.Nodes.drawImage(currentNode.ComputeCanvas, 0, 0, brianbrewer.Options.renderWidth, brianbrewer.Options.renderHeight, canvasOffset.X + currentNode.Position.X + currentNode.Dimension.PreviewX, canvasOffset.Y + currentNode.Position.Y + currentNode.Dimension.PreviewY, 100, 100);
         }
     };
 

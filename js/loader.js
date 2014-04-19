@@ -69,13 +69,15 @@ var Class = Class || chic.Class;
         "Data|GData",
         "Data|Point",
         "Data|Integer",
+        "Data|ImageData",
         "Nodes|GNode",
         "Nodes|Triangle",
         "Nodes|Quadrilateral",
         "Nodes|TessellateTriangle",
         "Nodes|TessellateQuadrilateral",
         "Nodes|Integer",
-        "Nodes|Point"
+        "Nodes|Point",
+        "Nodes|Final"
     ];
 
     testfunction = function (type, name) {

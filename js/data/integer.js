@@ -3,7 +3,7 @@
 (function () {
     "use strict";
 
-    // Base Graphical Data Node
+    // For passing integers
     brianbrewer.Data.Integer = brianbrewer.Data.GData.extend({
         init: function (i, editable) {
             this.sup(editable);

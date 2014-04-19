@@ -12,10 +12,16 @@
             this.Input.Point3 = new brianbrewer.Input("Point", true);
             this.Input.Point4 = new brianbrewer.Input("Point", true);
 
+            this.Output.Image = new brianbrewer.Output(new brianbrewer.Data.ImageData());
+
             this.Category = "Tessellate";
 
             this.CalculateSize();
         },
-        Compute: function () {}
+        Compute: function () {
+            this.sup();
+
+            console.log("Rendering " + this.Title);
+        }
     });
 }());

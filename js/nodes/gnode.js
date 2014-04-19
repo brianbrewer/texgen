@@ -16,8 +16,12 @@
             this.Title = title;
             this.Dimension = {};
             this.Predecessor = [];
-            this.ImageData = null; // Use this for actual image data
             this.Category = "Unsorted";
+
+            // Canvas for drawing / preview
+            this.ComputeCanvas = document.createElement("canvas");
+            this.ComputeCanvas.width = brianbrewer.Options.renderWidth;
+            this.ComputeCanvas.height = brianbrewer.Options.renderHeight;
 
             // Working with chic means assigning id's to things is a little finicky
             if (typeof x !== "undefined") {
@@ -93,26 +97,14 @@
             this.Dimension.PreviewY = this.Dimension.TitleHeight + this.Dimension.InputOutputHeight;
         },
         //@TODO: Test all of this functionality
-        Compute: function (toComputeList) {
-            var i,
-                j,
-                duplicate;
+        Compute: function () {
+            var i;
 
-            // Use ID and a list to compute distinct predecessors
             for (i = 0; i < this.Predecessor.length; i += 1) {
-                duplicate = false;
-                for (j = 0; j < toComputeList.length; j += 1) {
-                    if (this.Predecessor[i].ID === toComputeList[j].ID) {
-                        duplicate = true;
-                        break;
-                    }
-
-                    if (!duplicate) {
-                        toComputeList.push(this.Predecessor[i]);
-                        this.Predecessor[i].Compute(toComputeList);
-                    }
-                }
+                this.Predecessor[i].Compute();
             }
+
+            console.log("Render :: " + this.Title);
         }
     });
 }());

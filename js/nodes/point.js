@@ -12,6 +12,10 @@
 
             this.CalculateSize();
         },
-        Compute: function () {}
+        Compute: function () {
+            this.sup();
+
+            console.log("Rendering " + this.Title);
+        }
     });
 }());

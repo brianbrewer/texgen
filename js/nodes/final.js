@@ -2,11 +2,11 @@
 
 (function () {
     "use strict";
-    brianbrewer.Nodes.Integer = brianbrewer.Nodes.GNode.extend({
+    brianbrewer.Nodes.Final = brianbrewer.Nodes.GNode.extend({
         init: function (x, y) {
-            this.sup(x, y, "Integer");
+            this.sup(x, y, "Final Node");
 
-            this.Output.Value = new brianbrewer.Output(new brianbrewer.Data.Integer(0, true));
+            this.Input.Image = new brianbrewer.Input("ImageData", true);
 
             this.Category = "Basic";
 

@@ -3,7 +3,7 @@
 (function () {
     "use strict";
 
-    // Base Graphical Data Node
+    // Vectors / Points (X, Y)
     brianbrewer.Data.Point = brianbrewer.Data.GData.extend({
         init: function (x, y, editable) {
             this.sup(editable);

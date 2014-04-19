@@ -63,7 +63,7 @@ brianbrewer.Handler = brianbrewer.Handler || {};
                         }
 
                         currentLink.Type = "Input";
-                        currentLink.Node = Nodes[i];
+                        currentLink.Node = currentNode;
                         currentLink.Data = nodeInput;
 
                         currentConnection.x1 = currentNode.Position.X;
@@ -97,7 +97,7 @@ brianbrewer.Handler = brianbrewer.Handler || {};
                         }
 
                         currentLink.Type = "Output";
-                        currentLink.Node = Nodes[i];
+                        currentLink.Node = currentNode;
                         currentLink.Data = nodeOutput;
 
                         currentConnection.x1 = currentNode.Position.X + currentNode.Dimension.NodeWidth;
@@ -197,7 +197,7 @@ brianbrewer.Handler = brianbrewer.Handler || {};
                             });
 
                             // Add predecessor for rendering
-                            currentLink.Node.addPredecessor(currentNode);
+                            currentNode.addPredecessor(currentLink.Node);
                         }
                         break;
                     }
@@ -237,7 +237,7 @@ brianbrewer.Handler = brianbrewer.Handler || {};
                             });
 
                             // Add predecessor for rendering
-                            currentNode.addPredecessor(currentLink.Node);
+                            currentLink.Node.addPredecessor(currentNode);
                         }
                         break;
                     }
