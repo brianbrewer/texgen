@@ -224,7 +224,42 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
      * Description
      */
     setupOptionDrawer = function () {
+        $(".options .option").on("click", function (e) {
+            // Edit render width
+            if (e.target.dataset.option === "renderwidth") {
+                vex.dialog.open({
+                    message: "Edit Render Width",
+                    input: "<input name=\"renderwidth\" type=\"number\" value=\"" + brianbrewer.Options.renderWidth + "\">",
+                    callback: function (e) {
+                        brianbrewer.Options.renderWidth = parseInt(e.renderwidth, 10);
+                    }
+                });
+                return;
+            }
 
+            // Edit render height
+            if (e.target.dataset.option === "renderheight") {
+                vex.dialog.open({
+                    message: "Edit Render Height",
+                    input: "<input name=\"renderheight\" type=\"number\" value=\"" + brianbrewer.Options.renderHeight + "\">",
+                    callback: function (e) {
+                        brianbrewer.Options.renderHeight = parseInt(e.renderheight, 10);
+                    }
+                });
+                return;
+            }
+
+            // Export from selection of final nodes // Custom input
+            if (e.target.dataset.option === "export") {
+                vex.dialog.open({
+                    message: "Export Rendered Images",
+                    input: "<select><option>One</option><option>Two</option></select>",
+                    callback: function (e) {
+                    }
+                });
+                return;
+            }
+        });
     };
 
     /*
@@ -324,12 +359,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             Canvas.App.removeEventListener("mousemove", canvasMouseMoveHandler);
             Canvas.App.removeEventListener("mouseup", canvasMouseUpHandler);
 
-            // Quickly Draw //@TODO: Move drawing to it's own function, change it at the drawloop too
-            Context.App.clearRect(0, 0, Canvas.App.width, Canvas.App.height);
-            drawNodes();
-            drawConnections();
-            Context.App.drawImage(Canvas.Nodes, 0, 0);
-            Context.App.drawImage(Canvas.Connection, 0, 0);
+            drawAll();
 
             // Stop drawing loop
             window.clearTimeout(canvasDrawHandler);
@@ -358,6 +388,24 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
 
         // Add event listener to app canvas
         Canvas.App.addEventListener("mousedown", canvasMouseDownHandler);
+
+        // Setup window resizing
+        window.addEventListener("resize", function () {
+            Canvas.App = document.getElementById("app-canvas");
+            Context.App = Canvas.App.getContext("2d");
+            Canvas.App.width = $("#content").width();
+            Canvas.App.height = $("#content").height() - $(".navbar").height();
+
+            Canvas.Nodes = document.createElement("canvas");
+            Context.Nodes = Canvas.Nodes.getContext("2d");
+            Canvas.Nodes.width = Canvas.App.width;
+            Canvas.Nodes.height = Canvas.App.height;
+
+            Canvas.Connection = document.createElement("canvas");
+            Context.Connection = Canvas.Connection.getContext("2d");
+            Canvas.Connection.width = Canvas.App.width;
+            Canvas.Connection.height = Canvas.App.height;
+        }, false);
     };
 
     /*

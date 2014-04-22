@@ -9,7 +9,7 @@
             this.Input.Image = new brianbrewer.Input("ImageData", true);
             this.Output.Image = new brianbrewer.Output(new brianbrewer.Data.ImageData());
 
-            this.Category = "Alteration";
+            this.Category = "Basic";
 
             this.CalculateSize();
         },

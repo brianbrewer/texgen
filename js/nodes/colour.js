@@ -6,8 +6,8 @@
         init: function (x, y) {
             this.sup(x, y, "Colour");
 
-            this.Input.Top = new brianbrewer.Input("Colour", false);
-            this.Output.Image = new brianbrewer.Output(new brianbrewer.Data.ImageData());
+            this.Input.Colour = new brianbrewer.Input("String", false);
+            this.Output.Colour = new brianbrewer.Output(new brianbrewer.Data.Colour("", true));
 
             this.Category = "Basic";
 
@@ -16,34 +16,10 @@
         Compute: function () {
             this.sup();
 
-            var topData,
-                bottomData,
-                topPixelData,
-                bottomPixelData,
-                topTotal,
-                bottomTotal,
-                context,
-                contextData,
-                i;
-
-            topData = this.Input.Top.Data.imagedata;
-            bottomData = this.Input.Bottom.Data.imagedata;
-
-            topPixelData = topData.data;
-            bottomPixelData = bottomData.data;
-
-            context = this.ComputeCanvas.getContext("2d");
-            contextData = context.getImageData(0, 0, brianbrewer.Options.renderWidth, brianbrewer.Options.renderWidth);
-
-            for (i = 0; i < topData.length; i += 4) {
-                contextData.data[i] = topPixelData[i] > bottomPixelData[i] ? bottomPixelData[i] : topPixelData[i];
-                contextData.data[i + 1] = topPixelData[i + 1] > bottomPixelData[i + 1] ? bottomPixelData[i + 1] : topPixelData[i + 1];
-                contextData.data[i + 2] = topPixelData[i + 2] > bottomPixelData[i + 2] ? bottomPixelData[i + 2] : topPixelData[i + 2];
+            //@TODO: Error checking?
+            if (this.Input.Colour.Data) {
+                this.Output.Colour.Data.Hex = this.Input.Colour.Data.String;
             }
-
-            context.putImageData(contextData, 0, 0);
-
-            this.Output.Image.Data.imagedata = contextData;
         }
     });
 }());

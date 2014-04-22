@@ -105,14 +105,14 @@ brianbrewer.Handler = brianbrewer.Handler || {};
         Nodes = brianbrewer.Interface.Nodes;
 
         // Check if the user clicked confirm
-        if (data !== false) {
+        if (data) {
             // Use MergePattern to fit together data.%name-N with Node.Output.%name.Data.N
             for (outputName in Nodes[editingNode].Output) {
                 // Grab the merge list from the output data item
                 if (Nodes[editingNode].Output.hasOwnProperty(outputName)) {
                     mergePatternGroup = Nodes[editingNode].Output[outputName].Data.MergePattern;
 
-                    // Go through all the rules and attach the data name from pattern with the data name from pattern
+                    // Go through all the rules and attach the data name from pattern with the data from pattern
                     for (mergePattern in mergePatternGroup) {
                         if (mergePatternGroup.hasOwnProperty(mergePattern)) {
                             Nodes[editingNode].Output[outputName].Data[mergePattern] = data[mergePatternGroup[mergePattern].replace(/%name/g, outputName)];

@@ -81,7 +81,12 @@ var Class = Class || chic.Class;
         "Nodes|Point",
         "Nodes|Invert",
         "Nodes|Final",
-        "Nodes|Colour"
+        "Nodes|Colour",
+        "Nodes|Fill",
+        "Nodes|Darken",
+        "Nodes|Multiply",
+        "Nodes|String",
+        "Nodes|Perlin"
     ];
 
     testfunction = function (type, name) {

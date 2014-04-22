@@ -8,9 +8,14 @@
         init: function (string, editable) {
             this.sup(editable);
 
-            this.String = string | "";
+            this.String = string || "";
 
             this.Type = "String";
+
+            this.EditPattern = "<label for=\"%name-String\">String</label><input name=\"%name-String\" type=\"text\" value=\"%data-String\">";
+            this.MergePattern = {
+                String: "%name-String"
+            };
         }
     });
 }());
