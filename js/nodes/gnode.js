@@ -96,7 +96,6 @@
             this.Dimension.PreviewX = (this.Dimension.NodeWidth - this.Dimension.PreviewWidth) / 2;
             this.Dimension.PreviewY = this.Dimension.TitleHeight + this.Dimension.InputOutputHeight;
         },
-        //@TODO: Test all of this functionality
         Compute: function () {
             var i;
 

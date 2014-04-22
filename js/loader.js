@@ -77,6 +77,7 @@ var Class = Class || chic.Class;
         "Nodes|TessellateQuadrilateral",
         "Nodes|Integer",
         "Nodes|Point",
+        "Nodes|Invert",
         "Nodes|Final"
     ];
 

@@ -7,9 +7,9 @@
             this.sup(x, y, "Arbritrary Quadrilateral");
 
             this.Output.Point1 = new brianbrewer.Output(new brianbrewer.Data.Point(0, 0, true));
-            this.Output.Point2 = new brianbrewer.Output(new brianbrewer.Data.Point(0, 0, true));
-            this.Output.Point3 = new brianbrewer.Output(new brianbrewer.Data.Point(0, 0, true));
-            this.Output.Point4 = new brianbrewer.Output(new brianbrewer.Data.Point(0, 0, true));
+            this.Output.Point2 = new brianbrewer.Output(new brianbrewer.Data.Point(10, 0, true));
+            this.Output.Point3 = new brianbrewer.Output(new brianbrewer.Data.Point(10, 10, true));
+            this.Output.Point4 = new brianbrewer.Output(new brianbrewer.Data.Point(0, 10, true));
 
             this.Category = "Basic";
 

@@ -59,6 +59,8 @@
                     linePairs = [],
                     currentPair;
 
+                console.log(boundX, boundY);
+
                 // Order Points to avoid overlapping shapes
                 orderedPoints.push({
                     x: inputPoints[0].x,
@@ -273,6 +275,8 @@
             }];
 
             quadTesselation(brianbrewer.Options.renderWidth, brianbrewer.Options.renderHeight, points);
+
+            this.Output.Image.Data.imagedata = context.getImageData(0, 0, brianbrewer.Options.renderWidth, brianbrewer.Options.renderHeight);
         }
     });
 }());

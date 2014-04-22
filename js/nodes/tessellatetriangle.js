@@ -202,6 +202,9 @@
             this.ComputeCanvas.height = brianbrewer.Options.renderWidth;
             context = this.ComputeCanvas.getContext("2d");
 
+            context.fillStyle = "#ffffff";
+            context.fillRect(0, 0, brianbrewer.Options.renderWidth, brianbrewer.Options.renderHeight);
+
             triTesselation(brianbrewer.Options.renderWidth, brianbrewer.Options.renderHeight, [{
                 x: this.Input.Point1.Data.X,
                 y: this.Input.Point1.Data.Y
@@ -212,6 +215,8 @@
                 x: this.Input.Point3.Data.X,
                 y: this.Input.Point3.Data.Y
             }]);
+
+            this.Output.Image.Data.imagedata = context.getImageData(0, 0, brianbrewer.Options.renderWidth, brianbrewer.Options.renderHeight);
         }
     });
 }());

@@ -95,6 +95,8 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
      * Description.
      */
     setupToolbar = function () {
+        var i;
+
         // Tool / Mode Switching
         $(".nav-left a[data-mode]").on("click", function (e) {
             var tElement;
@@ -116,9 +118,15 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
         // Rendering
         $(".nav-right .render").on("click", function (e) {
             $(".nav-right .render i").addClass("fa-spin");
-            window.setTimeout(function () {
-                $(".nav-right .render i").removeClass("fa-spin");
-            }, 2000);
+
+            // Find final nodes and compute them
+            for (i = 0; i < Nodes.length; i += 1) {
+                if (Nodes[i].Title === "Final Node") {
+                    Nodes[i].Compute();
+                }
+            }
+            $(".nav-right .render i").removeClass("fa-spin");
+            drawAll();
         });
     };
 
@@ -376,7 +384,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             currentOutput;
 
         // Clear canvas
-        Canvas.Nodes.width = Canvas.App.width;
+        Context.Nodes.clearRect(0, 0, Canvas.Nodes.width, Canvas.Nodes.height);
 
         // Font setup
         Context.Nodes.font = brianbrewer.NodeStyle.FontSize + "px " + brianbrewer.NodeStyle.FontFamily;
@@ -496,10 +504,12 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             endX,
             endY;
 
-        // Clear Entire Canvas //@TODO: Maybe make better >_>
-        Canvas.Connection.width = Canvas.App.width;
+        // Clear Entire Canvas
+        Context.Connection.clearRect(0, 0, Canvas.Connection.width, Canvas.Connection.height);
 
         // Compute where all the inputs / outputs for the connections are
+        Context.Connection.beginPath(); //IE Fix
+
         for (i = 0; i < Connections.length; i += 1) {
             inputNode = Connections[i].InputNode;
             outputNode = Connections[i].OutputNode;

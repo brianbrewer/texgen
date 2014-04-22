@@ -15,7 +15,10 @@
         Compute: function () {
             this.sup();
 
-            console.log("Rendering " + this.Title);
+            var context;
+
+            context = this.ComputeCanvas.getContext("2d");
+            context.putImageData(this.Input.Image.Data.imagedata, 0, 0);
         }
     });
 }());

@@ -14,8 +14,6 @@
         },
         Compute: function () {
             this.sup();
-
-            console.log("Rendering " + this.Title);
         }
     });
 }());

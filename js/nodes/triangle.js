@@ -7,8 +7,8 @@
             this.sup(x, y, "Arbritrary Triangle");
 
             this.Output.Point1 = new brianbrewer.Output(new brianbrewer.Data.Point(0, 0, true));
-            this.Output.Point2 = new brianbrewer.Output(new brianbrewer.Data.Point(0, 0, true));
-            this.Output.Point3 = new brianbrewer.Output(new brianbrewer.Data.Point(0, 0, true));
+            this.Output.Point2 = new brianbrewer.Output(new brianbrewer.Data.Point(50, 50, true));
+            this.Output.Point3 = new brianbrewer.Output(new brianbrewer.Data.Point(0, 50, true));
 
             this.Category = "Basic";
 

@@ -34,8 +34,8 @@ body {
 	border-bottom: #222 1px solid;
 }
 
-.navbar li > a:hover {
-	background-color: #222;
+.navbar li:hover {
+	background-color: #222 !important;
 }
 
 .navbar .selected {
@@ -140,7 +140,7 @@ body {
     line-height: 50px;
     text-align: center;
     font-family: arial;
-    
+
     cursor: default;
     font-size: 14px;
 

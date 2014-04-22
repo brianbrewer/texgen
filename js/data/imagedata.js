@@ -8,7 +8,7 @@
         init: function (editable) {
             this.sup(false);
 
-            this.Image = [];
+            this.imagedata = [];
 
             this.Type = "ImageData";
         }
