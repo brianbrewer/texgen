@@ -8,7 +8,7 @@
 
             this.Input.Image = new brianbrewer.Input("ImageData", true);
 
-            this.Category = "Basic";
+            this.Category = "Other";
 
             this.CalculateSize();
         },

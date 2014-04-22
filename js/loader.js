@@ -70,6 +70,8 @@ var Class = Class || chic.Class;
         "Data|Point",
         "Data|Integer",
         "Data|ImageData",
+        "Data|Colour",
+        "Data|String",
         "Nodes|GNode",
         "Nodes|Triangle",
         "Nodes|Quadrilateral",
@@ -78,7 +80,8 @@ var Class = Class || chic.Class;
         "Nodes|Integer",
         "Nodes|Point",
         "Nodes|Invert",
-        "Nodes|Final"
+        "Nodes|Final",
+        "Nodes|Colour"
     ];
 
     testfunction = function (type, name) {
