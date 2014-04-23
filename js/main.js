@@ -95,7 +95,7 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
      * Description.
      */
     setupToolbar = function () {
-        var i;
+        var i, optionFunc;
 
         // Tool / Mode Switching
         $(".nav-left a[data-mode]").on("click", function (e) {
@@ -115,6 +115,12 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             currentState = $(tElement).data("mode");
         });
 
+        optionFunc = function (e) {
+            if ($(this).data("option") === "export") {
+                $(this).parent("a").attr("href", Nodes[i].ComputeCanvas.toDataURL());
+            }
+        };
+
         // Rendering
         $(".nav-right .render").on("click", function (e) {
             $(".nav-right .render i").addClass("fa-spin");
@@ -127,6 +133,14 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
             }
             $(".nav-right .render i").removeClass("fa-spin");
             drawAll();
+
+            // Setup Download
+            for (i = 0; i < Nodes.length; i += 1) {
+                if (Nodes[i].Title === "Final Node") {
+                    $(".options .option").each(optionFunc);
+                    break;
+                }
+            }
         });
     };
 
@@ -244,17 +258,6 @@ brianbrewer.Interface = brianbrewer.Interface || (function () {
                     input: "<input name=\"renderheight\" type=\"number\" value=\"" + brianbrewer.Options.renderHeight + "\">",
                     callback: function (e) {
                         brianbrewer.Options.renderHeight = parseInt(e.renderheight, 10);
-                    }
-                });
-                return;
-            }
-
-            // Export from selection of final nodes // Custom input
-            if (e.target.dataset.option === "export") {
-                vex.dialog.open({
-                    message: "Export Rendered Images",
-                    input: "<select><option>One</option><option>Two</option></select>",
-                    callback: function (e) {
                     }
                 });
                 return;
